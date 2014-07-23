@@ -2,9 +2,9 @@
 #include <zmq.h>
 #include <time.h>
 #include <assert.h>
+#include "../NotificationService.h"
 
-int main()
-{
+int main(){
     int rc;
     void *context = zmq_ctx_new ();
     void *subscriber = zmq_socket(context, ZMQ_SUB);
@@ -47,4 +47,10 @@ int main()
     zmq_close (publisher);
     zmq_ctx_destroy (context);
     return 0;
+}
+
+
+NotificationServiceDescription createNotificationServiceDescription(){
+    NotificationServiceDescription desc;
+    return desc;
 }
