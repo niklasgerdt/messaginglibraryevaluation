@@ -1,23 +1,21 @@
 #if !defined(NOS)
 #define NOS
 
-#include <zmq.h>
-
 struct NotificationServiceDescription{
-	char address;
-	char publisherAdresses;
+	char address[30];
+	char publisherAdresses[100][30];
 };
 typedef struct NotificationServiceDescription NotificationServiceDescription;
 
-
 struct NotificationService{
-	char address;
-	char publisherAdresses;
+	void *context;
+	void *publisher;
+	void *subscriber;
 };
 typedef struct NotificationService NotificationService;
 
-NotificationServiceDescription createNotificationServiceDescription();
-
 NotificationService createNotificationService(NotificationServiceDescription);
+
+void up(NotificationService);
 
 #endif
