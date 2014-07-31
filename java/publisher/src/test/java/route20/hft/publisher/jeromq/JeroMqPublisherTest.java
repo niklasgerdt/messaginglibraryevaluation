@@ -24,6 +24,7 @@ public class JeroMqPublisherTest {
 	@Before
 	public void initMocks() {
 		pub = new JeroMqPublisher();
+		pub.setAddress("TCP");
 		MockitoAnnotations.initMocks(this);
 		PowerMockito.mockStatic(ZMQ.class);
 		Mockito.when(ZMQ.context(1)).thenReturn(context);
@@ -32,23 +33,23 @@ public class JeroMqPublisherTest {
 
 	@Test
 	public void setupJeroMqConnection() {
-		pub.up("");
+		pub.up();
 		PowerMockito.verifyStatic();
 		ZMQ.context(1);
 		Mockito.verify(context).socket(ZMQ.PUB);
-		Mockito.verify(socket).connect("");
+		Mockito.verify(socket).connect("TCP");
 	}
 
 	@Test
 	public void sendMsg() {
-		pub.up("");
+		pub.up();
 		pub.pub("");
 		Mockito.verify(socket).send("");
 	}
 
 	@Test
 	public void tearDown() {
-		pub.up("");
+		pub.up();
 		pub.down();
 		Mockito.verify(socket).close();
 		Mockito.verify(context).term();

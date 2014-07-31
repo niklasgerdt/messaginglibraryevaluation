@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>route20</groupId>
+	<groupId>eu.route20</groupId>
 	<artifactId>hft-simulator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -13,7 +13,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>route20</groupId>
+			<groupId>eu.route20</groupId>
 			<artifactId>hft-publisher</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -26,6 +26,18 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.0.6.RELEASE</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
