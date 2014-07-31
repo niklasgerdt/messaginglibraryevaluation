@@ -18,3 +18,8 @@ project/plugins/project/
 
 # Build files
 .ensime*
+
+# Eclipse & Java
+.project*
+.classpath*
+.settings*
