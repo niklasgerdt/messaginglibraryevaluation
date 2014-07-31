@@ -1,41 +1,56 @@
 package route20.hft.publisher.jeromq;
 
-import org.junit.*;
-import org.junit.runner.*;
-import org.mockito.*;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.powermock.core.classloader.annotations.*;
-import org.powermock.modules.junit4.*;
-import org.zeromq.*;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.zeromq.ZMQ;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(ZMQ.class)
+@PrepareForTest({ ZMQ.class, ZMQ.Socket.class })
 public class JeroMqPublisherTest {
 	@Mock
-	private JeroMqHelper jmq;
+	private ZMQ.Context context;
 	@InjectMocks
-	private JeroMqPublisher test = new JeroMqPublisher();;
+	private JeroMqPublisher pub;
+	private ZMQ.Socket socket = PowerMockito.mock(ZMQ.Socket.class);
 
 	@Before
 	public void initMocks() {
+		pub = new JeroMqPublisher();
 		MockitoAnnotations.initMocks(this);
+		PowerMockito.mockStatic(ZMQ.class);
+		Mockito.when(ZMQ.context(1)).thenReturn(context);
+		Mockito.when(context.socket(ZMQ.PUB)).thenReturn(socket);
 	}
 
 	@Test
-	public void connectionCreation() {
-		test.up("");
-		Mockito.verify(jmq).up();
+	public void setupJeroMqConnection() {
+		pub.up("");
+		PowerMockito.verifyStatic();
+		ZMQ.context(1);
+		Mockito.verify(context).socket(ZMQ.PUB);
+		Mockito.verify(socket).connect("");
 	}
 
 	@Test
-	public void sending() {
-		test.pub("");
-		Mockito.verify(jmq).send("");
+	public void sendMsg() {
+		pub.up("");
+		pub.pub("");
+		Mockito.verify(socket).send("");
 	}
 
 	@Test
 	public void tearDown() {
-		test.down();
-		Mockito.verify(jmq).down();
+		pub.up("");
+		pub.down();
+		Mockito.verify(socket).close();
+		Mockito.verify(context).term();
 	}
 }
