@@ -6,14 +6,10 @@ import lombok.val;
 import route20.hft.publisher.Publisher;
 
 public class Simulator {
-	@Setter
-	private Publisher publisher;
-	@Setter
-	private int notificationChars;
-	@Setter
-	private int pauseInNanos;
-	@Setter
-	private long notifications;
+	@Setter private Publisher publisher;
+	@Setter private int notificationChars;
+	@Setter private int pauseInNanos;
+	@Setter private long notifications;
 
 	public void doSimulation() throws InterruptedException {
 		Random r = new Random();
