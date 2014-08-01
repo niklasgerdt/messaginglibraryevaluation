@@ -2,6 +2,7 @@ package eu.route20.hft.simulation;
 
 import java.util.Random;
 import lombok.Setter;
+import lombok.val;
 import route20.hft.publisher.Publisher;
 
 public class Simulator {
@@ -16,8 +17,8 @@ public class Simulator {
 
 	public void doSimulation() throws InterruptedException {
 		Random r = new Random();
-		byte[] bytes = new byte[notificationChars];
 		for (int i = 0; i < notifications; i++) {
+			val bytes = new byte[notificationChars];
 			r.nextBytes(bytes);
 			publisher.pub(bytes.toString());
 			Thread.sleep(0, pauseInNanos);
