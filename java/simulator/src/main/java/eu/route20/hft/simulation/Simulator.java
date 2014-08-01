@@ -1,23 +1,26 @@
 package eu.route20.hft.simulation;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Random;
+import lombok.Setter;
 import route20.hft.publisher.Publisher;
 
 public class Simulator {
-	@Autowired
+	@Setter
 	private Publisher publisher;
-	@Autowired
+	@Setter
 	private int notificationChars;
-	@Autowired
-	private long pauseInNanos;
-	private Long notifications;
+	@Setter
+	private int pauseInNanos;
+	@Setter
+	private long notifications;
 
-	public void setNotifications(Long notifications) {
-		this.notifications = notifications;
-	}
-
-	public void doSimulation() {
-		for (int i = 0; i < notifications; i++)
-			publisher.pub("notification " + i);
+	public void doSimulation() throws InterruptedException {
+		Random r = new Random();
+		byte[] bytes = new byte[notificationChars];
+		for (int i = 0; i < notifications; i++) {
+			r.nextBytes(bytes);
+			publisher.pub(bytes.toString());
+			Thread.sleep(0, pauseInNanos);
+		}
 	}
 }
