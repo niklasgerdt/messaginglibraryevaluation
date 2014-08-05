@@ -2,10 +2,8 @@ package route20.hft.publisher.jeromq;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-
 import org.zeromq.ZMQ;
-
-import route20.hft.publisher.Publisher;
+import eu.route20.hft.publisher.*;
 
 public class JeroMqPublisher implements Publisher {
 	private static final int ZMQ_THREADS = 1;
@@ -25,7 +23,7 @@ public class JeroMqPublisher implements Publisher {
 	}
 
 	@Override
-	public void pub(String notification) {
+	public void pub(byte[] notification) {
 		socket.send(notification);
 	}
 

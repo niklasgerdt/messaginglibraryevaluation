@@ -43,8 +43,9 @@ public class JeroMqPublisherTest {
 	@Test
 	public void sendMsg() {
 		pub.up();
-		pub.pub("");
-		Mockito.verify(socket).send("");
+		String notification = "msg";
+		pub.pub(notification.getBytes());
+		Mockito.verify(socket).send(notification.getBytes());
 	}
 
 	@Test
