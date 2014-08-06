@@ -1,16 +1,9 @@
 package eu.route20.hft.simulation.config;
 
+import org.slf4j.*;
 import org.springframework.context.annotation.*;
-import org.springframework.scheduling.concurrent.*;
 
-@Configuration @ComponentScan(basePackages = "eu.route20") public class Config {
-
-	@Bean public ThreadPoolTaskExecutor taskExecutor() {
-		ThreadPoolTaskExecutor pool = new ThreadPoolTaskExecutor();
-		pool.setCorePoolSize(3);
-		pool.setMaxPoolSize(3);
-		pool.setWaitForTasksToCompleteOnShutdown(true);
-		return pool;
-	}
+@Configuration @ComponentScan(basePackages = "eu.route20.hft") public class Config {
+	final static Logger logger = LoggerFactory.getLogger(Config.class);
 
 }

@@ -1,5 +1,7 @@
 package eu.route20.hft.simulation;
 
+import java.util.*;
+import lombok.*;
 import org.junit.*;
 import org.mockito.*;
 
@@ -14,19 +16,23 @@ public class SimulationRunnerTest {
 	}
 
 	@Test public void takes1toXSimulators() {
-		runner.addSimulators(s1);
-		runner.addSimulators(s1, s2);
+		val simulatorsWithOneSimulator = Arrays.asList(s1);
+		runner.setSimulators(simulatorsWithOneSimulator);
+		val simulatorsWithTwoSimulators = Arrays.asList(s1, s2);
+		runner.setSimulators(simulatorsWithTwoSimulators);
 	}
 
 	@Ignore @Test public void runsAllSimulators() {
-		runner.addSimulators(s1, s2);
+		val simulatorsWithTwoSimulators = Arrays.asList(s1, s2);
+		runner.setSimulators(simulatorsWithTwoSimulators);
 		runner.run();
 		Mockito.verify(s1).doSimulation();
 		Mockito.verify(s2).doSimulation();
 	}
 
 	@Ignore @Test public void runInParallel() {
-		runner.addSimulators(s1, s2);
+		val simulatorsWithTwoSimulators = Arrays.asList(s1, s2);
+		runner.setSimulators(simulatorsWithTwoSimulators);
 		runner.run();
 		InOrder order = Mockito.inOrder(s1, s2);
 		order.verify(s1).doSimulation();
