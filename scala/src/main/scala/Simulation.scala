@@ -13,6 +13,5 @@ trait Simulator {
 
 class ConfigurableSimulator extends Simulator{
 	def simulate(): Unit = {
-		
 	}
 }
