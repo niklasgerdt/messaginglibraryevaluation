@@ -1,4 +1,4 @@
-package eu.route20.hft.publishing
+package eu.route20.hft.publish
 
 import eu.route20.hft.notification.Notification
 
@@ -7,6 +7,7 @@ trait Publisher {
 }
 
 trait LoggingPublisher extends Publisher{
+	
 	def publish(notification: Notification): Unit = {
 		println(notification)
 	}
