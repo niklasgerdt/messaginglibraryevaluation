@@ -1,0 +1,21 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="publisher" class="eu.route20.hft.publisher.TimingPublisher" />
+
+<bean id="simulationRunner" class="eu.route20.hft.simulation.SimulationRunner"
+c:simulators=""
+/>
+
+</bean>
+
+	<bean id="quotesimulator" class="eu.route20.hft.simulation.Simulator"
+		c:publisher-ref="publisher" c:notifications="100000000"
+		c:notificationLengthInBytes="100" p:pauseInNanosBetweenNotifications="0" />
+		
+		
+
+</beans>
