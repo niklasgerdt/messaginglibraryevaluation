@@ -1,3 +1,3 @@
 package eu.route20.hft.notification
 
-case class Notification()
+case class Notification(msg: String)
