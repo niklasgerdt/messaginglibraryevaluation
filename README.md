@@ -1,11 +1,11 @@
-hft
+HFT
 ===
 Evaluation of messaging solutions for HFT Software.
 
 SUT
 ---
-ZeroMQ
-JeroMQ
-Apache Kafka
-Kestrel
-Akka
+* ZeroMQ
+* JeroMQ
+* Apache Kafka
+* Kestrel
+* Akka
