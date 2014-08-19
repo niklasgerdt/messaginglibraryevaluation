@@ -25,7 +25,7 @@ class ConfigurableSimulatorTest extends BaseTest {
     val s = new ConfigurableSimulator(m, c)
     s simulate
   }
-  
+
   it should "send notification of pre-configured size" in {
     var msg = ""
     class Mock extends Publisher {
@@ -39,5 +39,4 @@ class ConfigurableSimulatorTest extends BaseTest {
     s.simulate
     msg should have size 5
   }
-
 }

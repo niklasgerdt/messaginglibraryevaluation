@@ -15,13 +15,13 @@ class SimulationRunnerTest extends BaseTest {
     simulationRunner run
   }
 
-  it should "invoke all configured simulators" in{
-  	val m1 = mock[Simulator]
-  	val m2 = mock[Simulator]
-  	val simulators = List(m1, m2)
-  	(m1.simulate _).expects
-  	(m2.simulate _).expects
-  	val runner = new SimulationRunner(simulators)
-  	runner run
+  it should "invoke all configured simulators" in {
+    val m1 = mock[Simulator]
+    val m2 = mock[Simulator]
+    val simulators = List(m1, m2)
+    (m1.simulate _).expects
+    (m2.simulate _).expects
+    val runner = new SimulationRunner(simulators)
+    runner run
   }
 }
