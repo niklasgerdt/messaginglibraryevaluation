@@ -9,7 +9,7 @@ trait Simulator {
   def simulate(): Unit
 }
 
-case class SimulatorConfig(notifications: Int, notificationLength: Int)
+case class SimulatorConfig(notifications: Int, notificationLength: Int, pauseTime: Long)
 
 class SimulationRunner(simulators: List[Simulator]) {
   def run(): Unit = {
@@ -21,14 +21,20 @@ class ConfigurableSimulator(publisher: Publisher, config: SimulatorConfig) exten
   def simulate(): Unit = {
     info("simulating " + config.notifications + " notifications")
     val random = new Random()
+    val msg = random.nextString(config.notificationLength)
     val stream = Stream.range(0, config.notifications)
     stream.foreach(_ => send())
     info("done simulating")
 
     def send() = {
-      val msg = random.nextString(config.notificationLength)
       debug("msg: " + msg)
       publisher.publish(Notification(msg))
+      pause
+    }
+
+    def pause() = {
+      val nanoTime = System.nanoTime
+      while (nanoTime + config.pauseTime >= System.nanoTime) {}
     }
   }
 }

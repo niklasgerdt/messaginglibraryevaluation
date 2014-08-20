@@ -1,14 +1,19 @@
 package eu.route20.hft.publish
 
 import eu.route20.hft.notification.Notification
+import grizzled.slf4j.Logging
 
 trait Publisher {
   def publish(notification: Notification): Unit
 }
 
-trait LoggingPublisher extends Publisher {
-
+class LoggingPublisher extends Publisher with Logging {
   def publish(notification: Notification): Unit = {
-    println(notification)
+    info(notification)
+  }
+}
+
+class DummyPublisher extends Publisher {
+  def publish(notification: Notification): Unit = {
   }
 }
