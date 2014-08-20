@@ -9,19 +9,21 @@ trait Simulator {
   def simulate(): Unit
 }
 
-case class SimulatorConfig(notifications: Int, notificationLength: Int, pauseTime: Long)
+case class SimulatorConfig(notifications: Long, notificationLength: Long, pauseTime: Long)
 
-class SimulationRunner(simulators: List[Simulator]) {
+class SimulationRunner(simulators: List[Simulator]) extends Logging {
   def run(): Unit = {
+    info("starting simulations on " + simulators.size + " simulators")
     simulators.par.foreach((s: Simulator) => s.simulate())
+    info("simulations done")
   }
 }
 
 class ConfigurableSimulator(publisher: Publisher, config: SimulatorConfig) extends Simulator with Logging {
   def simulate(): Unit = {
-    info("simulating " + config.notifications + " notifications")
+    info("simulating " + config.notifications + " msgs, " + config.notificationLength + " len, " + config.pauseTime + " pause")
     val random = new Random()
-    val msg = random.nextString(config.notificationLength)
+    val msg = random.nextString(config.notificationLength.toInt)
     val stream = Stream.range(0, config.notifications)
     stream.foreach(_ => send())
     info("done simulating")
