@@ -21,3 +21,5 @@ libraryDependencies += "org.zeromq" % "jeromq" % "0.3.4"
 instrumentSettings
 
 org.scalastyle.sbt.ScalastylePlugin.Settings
+
+de.johoop.cpd4sbt.CopyPasteDetector.cpdSettings
