@@ -22,9 +22,9 @@ object SimulatorApp extends App {
   val s3 = new ConfigurableSimulator(pub, c3)
 
   val simulators = List(s1, s2, s3)
-  //  val simulators = List(s1) 
-  // val simulators = List(s2) 
-  // val simulators = List(s3) 
+  //  val simulators = List(s1)
+  // val simulators = List(s2)
+  // val simulators = List(s3)
 
   val runner = new SimulationRunner(simulators)
   runner.run
