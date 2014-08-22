@@ -1,11 +1,10 @@
-HFT
-===
+HFT Event Routing
+=================
 Evaluation of messaging solutions for HFT Software.
 
-SUT
----
-* ZeroMQ
-* JeroMQ
+Systems under evaluation
+------------------------
+* ZeroMQ (jeromq)
 * Apache Kafka
 * Kestrel
 * Akka
