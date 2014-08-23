@@ -1,15 +1,17 @@
 package eu.route20.hft.simulation
+
 import eu.route20.hft.publish._
 import eu.route20.hft.simulation._
+import grizzled.slf4j.Logging
 
-object SimulatorApp extends App {
-  println("Run simulations with different configurations")
-  val tenmillion = 10000000l
-  val tenthousand = 10000l
-  val hundred = 100l
-  val pauseForMillionMsgsPerSec = 1000l
-  val pauseForTenThousandMsgsPerSec = 100000l
-  val nil = 0l
+object SimulatorApp extends App with Logging {
+  info("Run simulations with different configurations")
+  val tenmillion = 10000000L
+  val tenthousand = 10000L
+  val hundred = 100L
+  val pauseForMillionMsgsPerSec = 1000L
+  val pauseForTenThousandMsgsPerSec = 100000L
+  val nil = 0L
 
   val pub = new DummyPublisher
   val c1 = SimulatorConfig(tenmillion / 10, hundred, pauseForMillionMsgsPerSec)

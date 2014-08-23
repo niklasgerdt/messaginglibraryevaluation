@@ -28,13 +28,13 @@ class ConfigurableSimulator(publisher: Publisher, config: SimulatorConfig) exten
     stream.foreach(_ => send())
     info("done simulating")
 
-    def send() = {
+    def send(): Unit = {
       debug("msg: " + msg)
       publisher.publish(Notification(msg))
       pause
     }
 
-    def pause() = {
+    def pause(): Unit = {
       val nanoTime = System.nanoTime
       while (nanoTime + config.pauseTime >= System.nanoTime) {}
     }
