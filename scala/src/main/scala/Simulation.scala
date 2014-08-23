@@ -1,36 +1,38 @@
 package eu.route20.hft.simulation
 
-import eu.route20.hft.publish._
-import eu.route20.hft.notification._
+import eu.route20.hft.notification.Notification
 import grizzled.slf4j.Logging
-import scala.util.Random
 
-trait Simulator {
-  def simulate(): Unit
-}
+class SimulationRunner(simulators: List[() => Unit]) extends Logging {
 
-case class SimulatorConfig(notifications: Long, notificationLength: Long, pauseTime: Long)
-
-class SimulationRunner(simulators: List[Simulator]) extends Logging {
   def run(): Unit = {
     info("starting simulations on " + simulators.size + " simulators")
-    simulators.par.foreach((s: Simulator) => s.simulate())
+    simulators.par.foreach(s => s())
     info("simulations done")
   }
 }
 
-class ConfigurableSimulator(publisher: Publisher, config: SimulatorConfig) extends Simulator with Logging {
-  def simulate(): Unit = {
+object SimulationRunner {
+  def apply(simulators: List[() => Unit]) = new SimulationRunner(simulators)
+}
+
+case class SimulatorConfig(notifications: Long, notificationLength: Long, pauseTime: Long)
+
+class ConfigurableSimulator(publisher: Notification => Unit, config: SimulatorConfig) extends Logging {
+  import scala.util.Random
+  private val random = new Random
+  private val msg = random.nextString(config.notificationLength.toInt)
+  private val stream = Stream.range(0, config.notifications)
+  val sim = simulate _
+
+  private def simulate(): Unit = {
     info("simulating " + config.notifications + " msgs, " + config.notificationLength + " len, " + config.pauseTime + " pause")
-    val random = new Random()
-    val msg = random.nextString(config.notificationLength.toInt)
-    val stream = Stream.range(0, config.notifications)
-    stream.foreach(_ => send())
+    stream.foreach(_ => sendAndPause)
     info("done simulating")
 
-    def send(): Unit = {
+    def sendAndPause(): Unit = {
       debug("msg: " + msg)
-      publisher.publish(Notification(msg))
+      publisher(Notification(msg))
       pause
     }
 
@@ -39,4 +41,8 @@ class ConfigurableSimulator(publisher: Publisher, config: SimulatorConfig) exten
       while (nanoTime + config.pauseTime >= System.nanoTime) {}
     }
   }
+}
+
+object ConfigurableSimulator {
+  def apply(publisher: Notification => Unit, config: SimulatorConfig) = new ConfigurableSimulator(publisher, config)
 }

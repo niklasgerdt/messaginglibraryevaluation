@@ -2,6 +2,7 @@ package eu.route20.hft.simulation
 
 import eu.route20.hft.publish._
 import eu.route20.hft.simulation._
+import eu.route20.hft.notification.Notification
 import grizzled.slf4j.Logging
 
 object SimulatorApp extends App with Logging {
@@ -13,15 +14,16 @@ object SimulatorApp extends App with Logging {
   val pauseForTenThousandMsgsPerSec = 100000L
   val nil = 0L
 
-  val pub = new DummyPublisher
+  def pub(n: Notification) = {}
+
   val c1 = SimulatorConfig(tenmillion / 10, hundred, pauseForMillionMsgsPerSec)
-  val s1 = new ConfigurableSimulator(pub, c1)
+  val s1 = new ConfigurableSimulator(pub, c1).sim
 
   val c2 = SimulatorConfig(tenthousand, tenthousand, pauseForTenThousandMsgsPerSec)
-  val s2 = new ConfigurableSimulator(pub, c2)
+  val s2 = new ConfigurableSimulator(pub, c2).sim
 
   val c3 = SimulatorConfig(tenthousand, hundred * 10, pauseForTenThousandMsgsPerSec)
-  val s3 = new ConfigurableSimulator(pub, c3)
+  val s3 = new ConfigurableSimulator(pub, c3).sim
 
   val simulators = List(s1, s2, s3)
   //  val simulators = List(s1)
@@ -29,6 +31,5 @@ object SimulatorApp extends App with Logging {
   // val simulators = List(s3)
 
   val runner = new SimulationRunner(simulators)
-  runner.run
+  runner run
 }
-
