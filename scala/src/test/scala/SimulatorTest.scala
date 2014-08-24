@@ -1,4 +1,3 @@
-
 package eu.route20.hft
 
 import eu.route20.hft.publish._
@@ -15,7 +14,7 @@ class ConfigurableSimulatorTest extends BaseTest {
     val c = SimulatorConfig(1, 0, 0)
     val n = Notification("")
     m expects (n)
-    val s = new ConfigurableSimulator(m, c)
+    val s = ConfigurableSimulator(m, c)
     s.sim()
   }
 
@@ -24,7 +23,7 @@ class ConfigurableSimulatorTest extends BaseTest {
     val n = Notification("")
     val c = SimulatorConfig(100, 0, 0)
     m expects (n) repeat (100)
-    val s = new ConfigurableSimulator(m, c)
+    val s = ConfigurableSimulator(m, c)
     s.sim()
   }
 
@@ -41,7 +40,7 @@ class ConfigurableSimulatorTest extends BaseTest {
     val pauseTime = timeBetweenNotifications * 100
     val c = SimulatorConfig(2, 0, pauseTime)
     val m = TimingMock.publish _
-    val s = new ConfigurableSimulator(m, c)
+    val s = ConfigurableSimulator(m, c)
     s.sim()
     TimingMock.timeBetweenMessages shouldBe (pauseTime + timeBetweenNotifications) +- (pauseTime / 10)
   }
