@@ -25,10 +25,7 @@ class ConfigurableSimulator(publisher: Notification => Unit, config: SimulatorCo
   private val stream = Stream.range(0, config.notifications)
   val sim = simulate _
 
-  private def simulate(): Unit = {
-    info("simulating " + config.notifications + " msgs, " + config.notificationLength + " len, " + config.pauseTime + " pause")
-    stream.foreach(_ => sendAndPause)
-    info("done simulating")
+  private def simulate: Unit = {
 
     def sendAndPause(): Unit = {
       debug("msg: " + msg)
@@ -40,6 +37,10 @@ class ConfigurableSimulator(publisher: Notification => Unit, config: SimulatorCo
       val nanoTime = System.nanoTime
       while (nanoTime + config.pauseTime >= System.nanoTime) {}
     }
+
+    info("simulating " + config.notifications + " msgs, " + config.notificationLength + " len, " + config.pauseTime + " pause")
+    stream.foreach(_ => sendAndPause)
+    info("done simulating")
   }
 }
 

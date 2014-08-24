@@ -11,28 +11,28 @@ import org.scalamock.FunctionAdapter1
 class ConfigurableSimulatorTest extends BaseTest {
 
   "Simulator" should "invoke publisher" in {
-    val m = mock[(n: Notification => {})]
+    val m = mock[(Notification => {})]
     val c = SimulatorConfig(1, 0, 0)
     val n = Notification("")
     (m.publish _).expects(n)
     val s = new ConfigurableSimulator(m, c)
-    s simulate
+    s()
   }
 
   it should "invoke publisher per configured notification" in {
-    val m = mock[(n: Notification => {})]
+    val m = mock[(Notification => {})]
     val n = Notification("")
     val c = SimulatorConfig(100, 0, 0)
     (m.publish _).expects(n).repeat(100)
     val s = new ConfigurableSimulator(m, c)
-    s simulate
+    s()
   }
 
   it should "send notification of pre-configured size" in {
-    val m = new Mock
+    val m = new Mock.publish _
     val c = SimulatorConfig(1, 5, 0)
     val s = new ConfigurableSimulator(m, c)
-    s.simulate
+    s()
     m.msg should have size 5
   }
 
@@ -40,21 +40,21 @@ class ConfigurableSimulatorTest extends BaseTest {
     val timeBetweenNotifications = 16000l
     val pauseTime = timeBetweenNotifications * 100
     val c = SimulatorConfig(2, 0, pauseTime)
-    val m = new TimingMock
+    val m = new TimingMock.publish _
     val s = new ConfigurableSimulator(m, c)
-    s.simulate
+    s
     m.timeBetweenMessages shouldBe (pauseTime + timeBetweenNotifications) +- (pauseTime / 10)
   }
 }
 
-class Mock extends Publisher {
+object Mock {
   var msg = ""
   def publish(n: Notification): Unit = {
     msg = n.msg
   }
 }
 
-class TimingMock extends Publisher {
+object TimingMock {
   var timeBetweenMessages = 0l
   var lastMessage = 0l
 
