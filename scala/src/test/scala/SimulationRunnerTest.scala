@@ -8,19 +8,22 @@ import eu.route20.hft.simulation._
 class SimulationRunnerTest extends BaseTest {
 
   "SimulationRunner" should "invoke simulator" in {
-    val simulatorMock = mock[() => {}]
-    val simulators = List(simulatorMock)
-    (simulatorMock() _).expects
+    val simulatorMock = mockFunction[Unit, Unit]
+    def f = { simulatorMock() }
+    val simulators = List(f _)
+    simulatorMock expects ()
     val simulationRunner = new SimulationRunner(simulators)
     simulationRunner run
   }
 
   it should "invoke all configured simulators" in {
-    val m1 = mock[() => {}]
-    val m2 = mock[() => {}]
-    val simulators = List(m1, m2)
-    (m1() _).expects
-    (m2() _).expects
+    val m1 = mockFunction[Unit, Unit]
+    val m2 = mockFunction[Unit, Unit]
+    def f1 = { m1() }
+    def f2 = { m2() }
+    val simulators = List(f1 _, f2 _)
+    m1 expects ()
+    m2 expects ()
     val runner = SimulationRunner(simulators)
     runner run
   }
