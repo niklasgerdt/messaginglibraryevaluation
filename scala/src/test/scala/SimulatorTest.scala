@@ -11,7 +11,7 @@ import org.scalamock.FunctionAdapter1
 class ConfigurableSimulatorTest extends BaseTest {
 
   "Simulator" should "invoke publisher" in {
-    val m = mock[(Notification => {})]
+    val m = mockFunction[(Notification => {})]
     val c = SimulatorConfig(1, 0, 0)
     val n = Notification("")
     (m.publish _).expects(n)
@@ -20,7 +20,7 @@ class ConfigurableSimulatorTest extends BaseTest {
   }
 
   it should "invoke publisher per configured notification" in {
-    val m = mock[(Notification => {})]
+    val m = mockFunction[(Notification => {})]
     val n = Notification("")
     val c = SimulatorConfig(100, 0, 0)
     (m.publish _).expects(n).repeat(100)
