@@ -1,30 +1,17 @@
-package eu.route20.hft.simulation
+package eu.route20.hft.app
 
-import eu.route20.hft.publish._
 import eu.route20.hft.simulation._
-import eu.route20.hft.notification.Notification
-import eu.route20.hft.config.Config
+import eu.route20.hft.publish._
 import grizzled.slf4j.Logging
 
-object SimulatorApp extends App with Logging with Config {
+object EmptyTest extends App with Logging with ConfValues {
   info("Run simulations with different configurations")
 
-  def pub(n: Notification) = {}
+  val c1 = Config(tenmillion / 10, hundred, pauseForMillionMsgsPerSec)
+  val c2 = Config(tenthousand, tenthousand, pauseForTenThousandMsgsPerSec)
+  val c3 = Config(tenthousand, hundred * 10, pauseForTenThousandMsgsPerSec)
+  val confs = List(c1, c2, c3)
 
-  val c1 = SimulatorConfig(tenmillion / 10, hundred, pauseForMillionMsgsPerSec)
-  val s1 = new ConfigurableSimulator(pub, c1).sim
-
-  val c2 = SimulatorConfig(tenthousand, tenthousand, pauseForTenThousandMsgsPerSec)
-  val s2 = new ConfigurableSimulator(pub, c2).sim
-
-  val c3 = SimulatorConfig(tenthousand, hundred * 10, pauseForTenThousandMsgsPerSec)
-  val s3 = new ConfigurableSimulator(pub, c3).sim
-
-  val simulators = List(s1, s2, s3)
-  //  val simulators = List(s1)
-  // val simulators = List(s2)
-  // val simulators = List(s3)
-
-  val runner = new SimulationRunner(simulators)
-  runner run
+  val sim = new Simulator with DummyPub
+  sim run confs
 }
