@@ -1,7 +1,7 @@
-package eu.route20.hft.app
+package eu.route20.hft.simulations
 
-import eu.route20.hft.simulation._
-import eu.route20.hft.publish._
+import eu.route20.hft.simulator._
+import eu.route20.hft.pub._
 import grizzled.slf4j.Logging
 
 object EmptyTest extends App with Logging with ConfValues {

@@ -1,9 +1,9 @@
 package eu.route20.hft
 
-import eu.route20.hft.publish._
-import eu.route20.hft.notification._
+import eu.route20.hft.pub._
+import eu.route20.hft.common._
 import eu.route20.hft.test._
-import eu.route20.hft.simulation._
+import eu.route20.hft.simulator._
 import org.scalatest._
 import org.scalamock.FunctionAdapter1
 
@@ -11,7 +11,7 @@ class ConfigurableSimulatorTest extends BaseTest {
 
   "Simulator" should "invoke publisher" in {
     val m = mockFunction[Notification, Unit]
-    val c = SimulatorConfig(1, 0, 0)
+    val c = Config(1, 0, 0)
     val n = Notification("")
     m expects (n)
     val s = ConfigurableSimulator(m, c)

@@ -1,7 +1,7 @@
-package eu.route20.hft.simulation
+package eu.route20.hft.simulator
 
-import eu.route20.hft.publish.Pub
-import eu.route20.hft.notification.Notification
+import eu.route20.hft.pub.Pub
+import eu.route20.hft.common.Notification
 import grizzled.slf4j.Logging
 import scala.util.Random
 

@@ -1,6 +1,6 @@
-package eu.route20.hft.publish
+package eu.route20.hft.pub
 
-import eu.route20.hft.notification.Notification
+import eu.route20.hft.common.Notification
 import grizzled.slf4j.Logging
 
 trait Pub {

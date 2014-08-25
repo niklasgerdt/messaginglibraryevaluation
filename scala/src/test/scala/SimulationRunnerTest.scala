@@ -1,9 +1,8 @@
-
 package eu.route20.hft
 
 import eu.route20.hft.test._
 import org.scalatest._
-import eu.route20.hft.simulation._
+import eu.route20.hft.simulator._
 
 class SimulationRunnerTest extends BaseTest {
 
