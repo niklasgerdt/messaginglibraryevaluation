@@ -15,7 +15,7 @@ class SimulatorTest extends BaseTest {
     s.events.size should be(1)
   }
 
-  it should "send notifications if no confs" in {
+  it should "not send notifications if no confs" in {
     val s = new Simulator with Mock
     s run List()
     s.events.size should be(0)
