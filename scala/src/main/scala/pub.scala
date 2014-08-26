@@ -8,11 +8,11 @@ trait Pub {
 }
 
 trait DummyPub extends Pub {
-  override def pub(n: Notification) = {}
+  override def pub(n: Notification): Unit = {}
 }
 
 object LoggingPub extends Pub with Logging {
-  override def pub(n: Notification) = info(n)
+  override def pub(n: Notification): Unit = info(n)
 }
 
 trait JeroMqPublisher extends Pub with Logging {
@@ -20,7 +20,7 @@ trait JeroMqPublisher extends Pub with Logging {
   val ctx = ZMQ.context(1)
   val socket = ctx.socket(ZMQ.PUB)
 
-  def apply(address: String) = socket.connect(address)
+  def apply(address: String): Unit = socket.connect(address)
 
   override def pub(n: Notification): Unit = socket.send(n.msg)
 }
