@@ -7,38 +7,38 @@ import org.scalatest._
 import eu.route20.hft.simulator._
 
 class SimulatorTest extends BaseTest {
+  def mock = new Mock
 
   "Simulator" should "publish notifications" in {
-    val c = Config(1, 1, 1)
-    val s = new Simulator with Mock
-    s run List(c)
-    s.events.size should be(1)
+    val m = mock
+    val c = List(Config(1, 1, 1))
+    m.start(Simulator.sims(c))
+    m.events.size should be(1)
   }
 
   it should "not send notifications if no confs" in {
-    val s = new Simulator with Mock
-    s run List()
-    s.events.size should be(0)
+    val m = mock
+    val c = List()
+    m.start(Simulator.sims(c))
+    m.events.size should be(0)
   }
 
   it should "send notifications as conffed value" in {
-    val s = new Simulator with Mock
-    val c1 = Config(3, 1, 1)
-    val c2 = Config(2, 1, 1)
-    s run List(c1, c2)
-    s.events.size should be(3 + 2)
+    val m = mock
+    val c = List(Config(3, 1, 1), Config(2, 1, 1))
+    m.start(Simulator.sims(c))
+    m.events.size should be(3 + 2)
   }
 
-it should "send notification as conffed length" in {
-   val s = new Simulator with Mock
-    val c1 = Config(3, 5, 1)
-    val c2 = Config(2, 2, 1)
-    s run List(c1, c2)
-val r = s.events.filter(_.msg.length == 5) 
-  r.size should be(3)
- }
+  it should "send notification as conffed length" in {
+    val m = mock
+    val c = List(Config(3, 5, 1), Config(2, 2, 1))
+    m.start(Simulator.sims(c))
+    val f = m.events.filter(_.msg.length == 5)
+    f.size should be(3)
+  }
 
-  trait Mock extends Pub {
+  class Mock extends Pub {
     var events: List[Notification] = List()
 
     override def pub(n: Notification) = { events = events :+ n }

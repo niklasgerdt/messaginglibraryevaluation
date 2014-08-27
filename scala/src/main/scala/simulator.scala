@@ -5,25 +5,20 @@ import eu.route20.hft.common.Notification
 import grizzled.slf4j.Logging
 import scala.util.Random
 
-case class Config(notifications: Long, notificationLength: Long, pauseTime: Long)
-
-abstract class Simulator extends Logging with Pub {
-
-  def run(confs: List[Config]): Unit = {
-    def conf2Sim(c: Config): () => Unit = {
-      () =>
+object Simulator extends Logging {
+  def sims(confs: List[Config]): List[(Notification => Unit) => Unit] = {
+    def conf2Sim(c: Config): (Notification => Unit) => Unit = {
+      (pub: Notification => Unit) =>
         {
           def sendAndPause(): Unit = {
-            debug("msg: " + msg)
-            pub(Notification(msg))
-            pause
-
             def pause(): Unit = {
               val nanoTime = System.nanoTime
               while (nanoTime + c.pauseTime >= System.nanoTime) {}
             }
+            debug("msg: " + msg)
+            pub(Notification(msg))
+            pause
           }
-
           lazy val msg = Random.nextString(c.notificationLength.toInt)
           val stream = Stream.range(0, c.notifications)
           info("simulating " + c.notifications + " msgs, " + c.notificationLength + " len, " + c.pauseTime + " pause")
@@ -31,13 +26,11 @@ abstract class Simulator extends Logging with Pub {
           info("done simulating")
         }
     }
-
-    info("starting simulations on " + confs.size + " simulators")
-    val sims = confs.map(conf2Sim(_))
-    sims.par.foreach(_())
-    info("simulations done")
+    confs.map(conf2Sim(_))
   }
 }
+
+case class Config(notifications: Long, notificationLength: Long, pauseTime: Long)
 
 trait ConfValues {
   val tenmillion = 10000000L
