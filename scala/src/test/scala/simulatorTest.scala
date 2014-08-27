@@ -34,8 +34,21 @@ class SimulatorTest extends BaseTest {
     val m = mock
     val c = List(Config(3, 5, 1), Config(2, 2, 1))
     m.start(Simulator.sims(c))
-    val f = m.events.filter(_.msg.length == 5)
+    val f = m.events.filter(_.body.length == 5)
     f.size should be(3)
+  }
+
+  it should "pause between notifications if conffed" in {
+    val m1 = mock
+    val c1 = List(Config(2, 0, 1000000))
+    m1.start(Simulator.sims(c1))
+    val f1 = (m1.events :\ 0L)(_.header.get.createdNano - _)
+    val m2 = mock
+    val c2 = List(Config(2, 0, 0))
+    m2.start(Simulator.sims(c2))
+    val f2 = (m2.events :\ 0L)(_.header.get.createdNano - _)
+    -f1 should be > 1000000L
+    -f2 should be < 1000000L
   }
 
   class Mock extends Pub {

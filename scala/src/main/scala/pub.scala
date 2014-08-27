@@ -28,5 +28,5 @@ trait JeroMqPublisher extends Pub with Logging {
 
   def apply(address: String): Unit = socket.connect(address)
 
-  override def pub(n: Notification): Unit = socket.send(n.msg)
+  override def pub(n: Notification): Unit = socket.send(n.body)
 }

@@ -1,7 +1,7 @@
 package eu.route20.hft.simulator
 
 import eu.route20.hft.pub.Pub
-import eu.route20.hft.common.Notification
+import eu.route20.hft.common._
 import grizzled.slf4j.Logging
 import scala.util.Random
 
@@ -16,7 +16,8 @@ object Simulator extends Logging {
               while (nanoTime + c.pauseTime >= System.nanoTime) {}
             }
             debug("msg: " + msg)
-            pub(Notification(msg))
+            val h = Some(Header("", System.nanoTime, 0L))
+            pub(Notification(h, msg))
             pause
           }
           lazy val msg = Random.nextString(c.notificationLength.toInt)
