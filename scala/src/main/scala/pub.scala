@@ -21,12 +21,19 @@ trait LoggingPub extends Pub with Logging {
   override def pub(n: Notification): Unit = info(n)
 }
 
-trait JeroMqPublisher extends Pub with Logging {
+class JeroMqPublisher(address: String) extends Pub with Logging {
   import org.zeromq.ZMQ;
   val ctx = ZMQ.context(1)
   val socket = ctx.socket(ZMQ.PUB)
 
-  def apply(address: String): Unit = socket.connect(address)
+  override def start(streams: List[(Notification => Unit) => Unit]): Unit = {
+    socket.connect(address)
+    super.start(streams)
+  }
 
   override def pub(n: Notification): Unit = socket.send(n.body)
+}
+
+object JeroMqPublisher {
+  def apply(address: String) = new JeroMqPublisher(address)
 }
