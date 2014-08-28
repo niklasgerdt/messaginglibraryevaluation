@@ -13,7 +13,9 @@ object Simulator extends Logging {
           def sendAndPause(): Unit = {
             def pause(): Unit = {
               val nanoTime = System.nanoTime
-              while (nanoTime + c.pauseTime >= System.nanoTime) {}
+              Stream.continually(System.nanoTime())
+                .takeWhile(_ < (nanoTime + c.pauseTime))
+                .force
             }
             debug("msg: " + msg)
             val h = Some(Header("", System.nanoTime, 0L))
@@ -21,9 +23,9 @@ object Simulator extends Logging {
             pause
           }
           lazy val msg = Random.nextString(c.notificationLength.toInt)
-          val stream = Stream.range(0, c.notifications)
           info("simulating " + c.notifications + " msgs, " + c.notificationLength + " len, " + c.pauseTime + " pause")
-          stream.foreach(_ => sendAndPause)
+          Stream.range(0, c.notifications)
+            .foreach(_ => sendAndPause)
           info("done simulating")
         }
     }
