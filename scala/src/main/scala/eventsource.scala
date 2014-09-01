@@ -12,10 +12,9 @@ case class SimulatorConfig(notifications: Int, notificationLength: Int, pauseTim
 trait Runner extends Logging {
 
   @tailrec final def run(es: () => Option[Notification], pub: Notification => Unit): Unit = {
-    val n = es()
-    if (n.isDefined) {
-      pub(n.get)
-      run(es, pub)
+    es() match {
+      case Some(n) => pub(n); run(es, pub);
+      case None =>
     }
   }
 }
