@@ -28,3 +28,5 @@ project/plugins/project/
 # idea files
 .idea*
 *.iml
+.cache
+.sbtconfig
