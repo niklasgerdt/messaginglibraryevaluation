@@ -9,7 +9,7 @@ trait Pub extends Logging {
   def start(streams: List[(Notification => Unit) => Unit]): Unit = {
     info("starting publishing on " + streams.size + " streams")
     streams.par.foreach(_(pub))
-    info("streams fininished")
+    info("streams finished")
   }
 }
 
@@ -22,7 +22,7 @@ trait LoggingPub extends Pub with Logging {
 }
 
 class JeroMqPublisher(address: String) extends Pub with Logging {
-  import org.zeromq.ZMQ;
+  import org.zeromq.ZMQ
   val ctx = ZMQ.context(1)
   val socket = ctx.socket(ZMQ.PUB)
 

@@ -25,3 +25,6 @@ project/plugins/project/
 .project*
 .classpath*
 .settings*
+# idea files
+.idea*
+*.iml

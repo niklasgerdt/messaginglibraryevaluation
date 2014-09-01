@@ -1,5 +1,6 @@
 package eu.route20.hft.simulator
 
+import eu.route20.hft.eventsource.SimulatorConfig
 import eu.route20.hft.test.BaseTest
 import eu.route20.hft.common.Notification
 import eu.route20.hft.pub.Pub
@@ -11,7 +12,7 @@ class SimulatorTest extends BaseTest {
 
   "Simulator" should "publish notifications" in {
     val m = mock
-    val c = List(Config(1, 1, 1))
+    val c = List()
     m.start(Simulator.sims(c))
     m.events.size should be(1)
   }
@@ -25,14 +26,14 @@ class SimulatorTest extends BaseTest {
 
   it should "send notifications as conffed value" in {
     val m = mock
-    val c = List(Config(3, 1, 1), Config(2, 1, 1))
+    val c = List(SimulatorConfig(3, 1, 1), SimulatorConfig(2, 1, 1))
     m.start(Simulator.sims(c))
     m.events.size should be(3 + 2)
   }
 
   it should "send notification as conffed length" in {
     val m = mock
-    val c = List(Config(3, 5, 1), Config(2, 2, 1))
+    val c = List(SimulatorConfig(3, 5, 1), SimulatorConfig(2, 2, 1))
     m.start(Simulator.sims(c))
     val f = m.events.filter(_.body.length == 5)
     f.size should be(3)
@@ -40,11 +41,11 @@ class SimulatorTest extends BaseTest {
 
   it should "pause between notifications if conffed" in {
     val m1 = mock
-    val c1 = List(Config(2, 0, 1000000))
+    val c1 = List(SimulatorConfig(2, 0, 1000000))
     m1.start(Simulator.sims(c1))
     val f1 = (m1.events :\ 0L)(_.header.get.createdNano - _)
     val m2 = mock
-    val c2 = List(Config(2, 0, 0))
+    val c2 = List(SimulatorConfig(2, 0, 0))
     m2.start(Simulator.sims(c2))
     val f2 = (m2.events :\ 0L)(_.header.get.createdNano - _)
     -f1 should be > 1000000L
@@ -54,7 +55,10 @@ class SimulatorTest extends BaseTest {
   class Mock extends Pub {
     var events: List[Notification] = List()
 
-    override def pub(n: Notification) = { events = events :+ n }
+    override def pub(n: Notification) = {
+      events = events :+ n
+    }
   }
+
 }
 
