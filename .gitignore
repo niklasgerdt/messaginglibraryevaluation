@@ -30,3 +30,4 @@ project/plugins/project/
 *.iml
 .cache
 .sbtconfig
+.idea/
