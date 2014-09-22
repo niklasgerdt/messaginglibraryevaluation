@@ -13,12 +13,3 @@ object Util {
       pause(nanoTime, pauseTime)
   }
 }
-
-trait ConfValues {
-  val tenmillion = 10000000
-  val tenthousand = 10000
-  val hundred = 100
-  val pauseForMillionMsgsPerSec = 1000L
-  val pauseForTenThousandMsgsPerSec = 100000L
-  val nil = 0L
-}

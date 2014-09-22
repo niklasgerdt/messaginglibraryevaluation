@@ -1,6 +1,6 @@
 package eu.route20.hft.simulator
 
-import eu.route20.hft.eventsource.SimulatorConfig
+import eu.route20.hft.simulator.SimulatorConfig
 import eu.route20.hft.test.BaseTest
 import eu.route20.hft.common.Notification
 import eu.route20.hft.pub.Pub
