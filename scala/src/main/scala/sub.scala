@@ -1,4 +1,5 @@
-import eu.route20.hft.nos.JeroMQ._
+package eu.route20.hft.sub
+
 import grizzled.slf4j.Logging
 import org.zeromq.ZMQ
 

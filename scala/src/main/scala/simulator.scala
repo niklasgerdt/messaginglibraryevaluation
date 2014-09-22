@@ -17,6 +17,10 @@ trait SimConfValues {
   val nil = 0L
 }
 
+trait EndSignals {
+  def endless() = false
+}
+
 trait SimulatorMapper extends SimConfValues with Logging {
 
   def map(c: SimulatorConfig): () => Unit = {
