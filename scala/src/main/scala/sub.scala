@@ -67,8 +67,8 @@ object SimpleJeroMqSub extends App {
   def rec(i: Int): Unit = {
     if (i > 0) {
       val msg = sub.recvStr()
+      println("received msg " + i + ":" + msg)
       if (!msg.equalsIgnoreCase("x")) {
-        println("received msg " + i + ":" + msg)
         rec(i - 1)
       }
     }

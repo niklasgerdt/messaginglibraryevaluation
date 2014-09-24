@@ -47,13 +47,12 @@ object SimpleJeroMqPubSub extends App {
   ctx.term()
 
   def rec(i: Int): Unit = {
-    if (i > 0) {
-      val msg = sub.recvStr()
-      if (!msg.equalsIgnoreCase("x")) {
-        println("received msg " + i + ":" + msg)
-        pub.send(msg)
-        rec(i - 1)
-      }
+    val msg = sub.recvStr()
+    println("received msg " + i + ":" + msg)
+    pub.send(msg)
+    val j = i - 1
+    if (j > 0 && !msg.equalsIgnoreCase("x")) {
+      rec(i - 1)
     }
   }
 }
