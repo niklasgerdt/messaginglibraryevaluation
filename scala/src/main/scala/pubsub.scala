@@ -10,9 +10,11 @@ object JeroMQ extends App with Logging {
   val sub = ctx.socket(ZMQ.SUB)
 
   info("starting up JeroMQ pubsub-system")
-  sub.connect("tcp://localhost:5900")
+  sub.connect("tcp://169.254.5.233:5500")
+  sub.connect("tcp://169.254.5.233:5501")
+  sub.connect("tcp://169.254.5.233:5502")
   sub.subscribe("".getBytes)
-  pub.bind("tcp://*:5901")
+  pub.bind("tcp://169.254.5.57:5600")
   recSend()
   sub.close()
   pub.close()
