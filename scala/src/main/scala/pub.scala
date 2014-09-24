@@ -1,6 +1,6 @@
 package eu.route20.hft.pub
 
-import eu.route20.hft.common.Notification
+import eu.route20.hft.common.{Header, Notification}
 import grizzled.slf4j.Logging
 import org.zeromq.ZMQ
 
@@ -14,6 +14,28 @@ trait DummyPub extends Pub {
 
 trait LoggingPub extends Pub with Logging {
   override def pub(n: Notification): Unit = info(n)
+}
+
+object LocalPub extends Pub with Logging {
+  var events: List[Notification] = List()
+  var eventCount = 0L
+  val MILLION: Int = 1000000
+
+  override def pub(n: Notification) = {
+    eventCount = eventCount + 1
+    val e = Notification(Header("", n.header.createdNano, System.nanoTime()), "")
+    events = events :+ e
+    if (events.size == 10000) {
+      asyncLog(events)
+      events = List()
+    }
+  }
+
+  def asyncLog(e: List[Notification]): Unit = {
+    new Thread(new Runnable {
+      override def run(): Unit = for (n <- e) info(n)
+    }).start()
+  }
 }
 
 class JeroMqPub private(addr: String) extends Pub with Logging {

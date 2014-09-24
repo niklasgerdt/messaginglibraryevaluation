@@ -1,5 +1,7 @@
 package eu.route20.hft.simulator
 
+import java.io.File
+
 import eu.route20.hft.common._
 import grizzled.slf4j.Logging
 import scala.annotation.tailrec
@@ -9,6 +11,12 @@ case class SimulatorConfig(notifications: Int, notificationLength: Int, pauseTim
 
 trait SimConfValues {
   val ENDLESS = -1
+  val milliInNanos = 1000000
+  val mikroInNanos = 1000
+  val shortMsg = 100
+  val mediumMsg = 1000
+  val longMsg = 100000
+  val nano = 1
   val tenmillion = 10000000
   val tenthousand = 10000
   val hundred = 100
@@ -17,8 +25,27 @@ trait SimConfValues {
   val nil = 0L
 }
 
-trait EndSignals {
+object KillFile extends Logging {
+  var killFile = false
+
+  new Thread(new Runnable {
+    override def run(): Unit = while (true) {
+      val f = new File("kill")
+      if (f.exists()){
+        killFile = true
+        f.delete()
+      }
+      Thread.sleep(1000)
+    }
+  }).start()
+
+  def kill() = killFile
+}
+
+trait EndSignals extends Logging {
+
   def endless() = false
+
 }
 
 trait SimulatorMapper extends SimConfValues with Logging {
@@ -27,7 +54,7 @@ trait SimulatorMapper extends SimConfValues with Logging {
     () => {
       @tailrec def simulate(toGo: Int): Unit = {
         if ((c.notifications == ENDLESS || toGo > 0) && !c.end()) {
-          val h = Some(Header("", System.nanoTime, 0L))
+          val h = Header("", System.nanoTime, 0L)
           val n = Notification(h, msg)
           debug(n)
           c.pub(n)

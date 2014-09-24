@@ -23,3 +23,24 @@ instrumentSettings
 org.scalastyle.sbt.ScalastylePlugin.Settings
 
 de.johoop.cpd4sbt.CopyPasteDetector.cpdSettings
+
+fork in run := true
+
+javaOptions in run += "-Xmx2G"
+
+javaOptions in run += "-Xms2G"
+
+javaOptions in run += "-XX:+UseG1GC"
+
+javaOptions in run += "-XX:MaxGCPauseMillis=1"
+
+javaOptions in run += "-XX:+PrintGCDetails"
+
+javaOptions in run += "-XX:+PrintGCApplicationConcurrentTime"
+
+javaOptions in run += "-XX:+PrintGCApplicationStoppedTime"
+
+javaOptions in run += "-Xloggc:gc_log"
+
+baseDirectory in run := file("../perf/")
+

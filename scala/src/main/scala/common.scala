@@ -2,7 +2,7 @@ package eu.route20.hft.common
 
 import scala.annotation.tailrec
 
-case class Notification(header: Option[Header], body: String)
+case class Notification(header: Header, body: String)
 
 case class Header(id: String, createdNano: Long, routedNano: Long)
 

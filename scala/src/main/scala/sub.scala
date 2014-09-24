@@ -18,11 +18,6 @@ class JeroMqSub private(address: String) extends Logging {
   sub.connect(address)
   sub.subscribe("".getBytes)
 
-  //  receive()
-  //  sub.close()
-  //  ctx.term()
-  //  info("JeroMQ down")
-
   @tailrec final def receive(): Unit = {
     val msg = sub.recvStr()
     debug(msg)

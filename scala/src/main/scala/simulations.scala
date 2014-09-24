@@ -49,3 +49,10 @@ object EndlessJeroMqSimulation extends App with Logging with SimConfValues with 
   )
   pub.end()
 }
+
+object LocalSimulation1 extends App with SimulatorMapper with SimulatorRunner with SimConfValues {
+  runParallel(
+    List(SimulatorConfig(ENDLESS, shortMsg, milliInNanos, LocalPub.pub, KillFile.kill)).
+      map(map(_))
+  )
+}
