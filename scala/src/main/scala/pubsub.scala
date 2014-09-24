@@ -1,5 +1,6 @@
 package eu.route20.hft.nos
 
+import eu.route20.hft.nos.JeroMQ._
 import grizzled.slf4j.Logging
 import org.zeromq.ZMQ
 import scala.annotation.tailrec
@@ -26,5 +27,31 @@ object JeroMQ extends App with Logging {
     debug(msg)
     pub.send(msg)
     recSend()
+  }
+}
+
+object SimpleJeroMqPubSub extends App {
+  val ctx = ZMQ.context(1)
+  val pub = ctx.socket(ZMQ.PUB)
+  val sub = ctx.socket(ZMQ.SUB)
+
+  sub.connect("tcp://169.254.5.233:5500")
+  sub.connect("tcp://169.254.5.233:5501")
+  sub.subscribe("".getBytes)
+  pub.bind("tcp://169.254.5.57:5600")
+  rec(10)
+  sub.close()
+  pub.close()
+  ctx.term()
+
+  def rec(i: Int): Unit = {
+    if (i > 0) {
+      val msg = sub.recvStr()
+      if (!msg.equalsIgnoreCase("x")) {
+        println("received msg " + i + ":" + msg)
+        pub.send(msg)
+        rec(i - 1)
+      }
+    }
   }
 }

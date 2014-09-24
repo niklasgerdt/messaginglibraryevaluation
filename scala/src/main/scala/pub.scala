@@ -2,6 +2,7 @@ package eu.route20.hft.pub
 
 import eu.route20.hft.common.Notification
 import grizzled.slf4j.Logging
+import org.zeromq.ZMQ
 
 trait Pub {
   def pub(n: Notification): Unit
@@ -16,9 +17,6 @@ trait LoggingPub extends Pub with Logging {
 }
 
 class JeroMqPub private(addr: String) extends Pub with Logging {
-
-  import org.zeromq.ZMQ
-
   val ctx = ZMQ.context(1)
   val socket = ctx.socket(ZMQ.PUB)
   socket.bind(addr)
@@ -36,4 +34,26 @@ class JeroMqPub private(addr: String) extends Pub with Logging {
 
 object JeroMqPub {
   def apply(addr: String) = new JeroMqPub(addr)
+}
+
+object SimpleJeroMqSub extends App {
+  val ctx = ZMQ.context(1)
+  val pub = ctx.socket(ZMQ.PUB)
+  pub.bind("tcp://169.254.5.57:5500")
+
+  println("send event (Max 10 events, x/X terminates")
+  run(10)
+
+  pub.close()
+  ctx.term()
+
+  def run(i: Int): Unit = {
+    if (i > 0) {
+      val x = Console.in.readLine()
+      if (!x.equalsIgnoreCase("x")) {
+        pub.send(x)
+        run(i - 1)
+      }
+    }
+  }
 }
