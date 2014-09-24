@@ -57,7 +57,10 @@ object SimpleJeroMqSub extends App {
   val sub = ctx.socket(ZMQ.SUB)
   sub.connect("tcp://169.254.5.57:5600")
   sub.subscribe("".getBytes)
+
   rec(10)
+  println("sub terminated")
+
   sub.close()
   ctx.term()
 

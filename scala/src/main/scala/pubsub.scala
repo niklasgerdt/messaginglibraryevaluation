@@ -38,7 +38,10 @@ object SimpleJeroMqPubSub extends App {
   sub.connect("tcp://169.254.5.233:5501")
   sub.subscribe("".getBytes)
   pub.bind("tcp://169.254.5.57:5600")
+
   rec(10)
+  println("pubsub terminated")
+
   sub.close()
   pub.close()
   ctx.term()
