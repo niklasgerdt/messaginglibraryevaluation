@@ -1,6 +1,5 @@
 package eu.route20.hft.nos
 
-import eu.route20.hft.nos.JeroMQ._
 import grizzled.slf4j.Logging
 import org.zeromq.ZMQ
 import scala.annotation.tailrec
