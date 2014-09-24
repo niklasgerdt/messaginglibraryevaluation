@@ -50,8 +50,8 @@ object SimpleJeroMqPub extends App {
   def run(i: Int): Unit = {
     if (i > 0) {
       val x = Console.in.readLine()
+      pub.send(x)
       if (!x.equalsIgnoreCase("x")) {
-        pub.send(x)
         run(i - 1)
       }
     }
