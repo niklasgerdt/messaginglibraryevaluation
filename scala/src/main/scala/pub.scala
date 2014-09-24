@@ -39,7 +39,7 @@ object JeroMqPub {
 object SimpleJeroMqSub extends App {
   val ctx = ZMQ.context(1)
   val pub = ctx.socket(ZMQ.PUB)
-  pub.bind("tcp://169.254.5.57:5500")
+  pub.bind("tcp://169.254.5.233:5500")
 
   println("send event (Max 10 events, x/X terminates")
   run(10)
