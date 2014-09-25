@@ -1,7 +1,9 @@
 package eu.route20.hft.simulations
 
+import eu.route20.hft.nos.LocalPubSub
 import eu.route20.hft.simulator._
 import eu.route20.hft.pub._
+import eu.route20.hft.sub.LocalSub
 import grizzled.slf4j.Logging
 
 object DummySimulation extends App with Logging with SimConfValues with DummyPub with SimulatorMapper with SimulatorRunner with EndSignals {
@@ -51,8 +53,14 @@ object EndlessJeroMqSimulation extends App with Logging with SimConfValues with 
 }
 
 object LocalSimulation1 extends App with SimulatorMapper with SimulatorRunner with SimConfValues {
+  LocalPubSub.subscribe(new LocalSub)
+  LocalPubSub.subscribe(new LocalSub)
+  LocalPubSub.subscribe(new LocalSub)
+
   runParallel(
-    List(SimulatorConfig(ENDLESS, shortMsg, milliInNanos, LocalPub.pub, KillFile.kill)).
+    List(SimulatorConfig(ENDLESS, shortMsg, milliInNanos, LocalPub.pub, KillFile.kill),
+      SimulatorConfig(ENDLESS, shortMsg, milliInNanos, LocalPub.pub, KillFile.kill),
+      SimulatorConfig(ENDLESS, shortMsg, milliInNanos, LocalPub.pub, KillFile.kill)).
       map(map(_))
   )
 }

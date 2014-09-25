@@ -18,6 +18,8 @@ libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.1.2
 
 libraryDependencies += "org.zeromq" % "jeromq" % "0.3.4" 
 
+libraryDependencies += "org.apache.spark" % "spark-core_2.10" % "1.1.0" 
+
 instrumentSettings
 
 org.scalastyle.sbt.ScalastylePlugin.Settings
@@ -26,13 +28,13 @@ de.johoop.cpd4sbt.CopyPasteDetector.cpdSettings
 
 fork in run := true
 
-javaOptions in run += "-Xmx2G"
+javaOptions in run += "-Xmx4G"
 
-javaOptions in run += "-Xms2G"
+javaOptions in run += "-Xms1G"
 
 javaOptions in run += "-XX:+UseG1GC"
 
-javaOptions in run += "-XX:MaxGCPauseMillis=1"
+javaOptions in run += "-XX:MaxGCPauseMillis=10"
 
 javaOptions in run += "-XX:+PrintGCDetails"
 

@@ -1,9 +1,32 @@
 package eu.route20.hft.sub
 
+import eu.route20.hft.common.{Header, Notification}
 import grizzled.slf4j.Logging
 import org.zeromq.ZMQ
 
 import scala.annotation.tailrec
+
+class LocalSub extends Logging{
+  var events: List[Notification] = List()
+  var eventCount = 0L
+  val MILLION: Int = 1000000
+
+  def notify(n: Notification) = {
+    eventCount = eventCount + 1
+    val e = Notification(Header("", n.header.createdNano, System.nanoTime()), "")
+    events = events :+ e
+    if (events.size == 10000) {
+      asyncLog(events)
+      events = List()
+    }
+  }
+
+  def asyncLog(e: List[Notification]): Unit = {
+    new Thread(new Runnable {
+      override def run() = for (n <- e) info(n)
+    }).start()
+  }
+}
 
 object JeroMqSub {
   def apply(a: String) = new JeroMqSub(a)

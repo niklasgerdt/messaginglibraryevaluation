@@ -1,5 +1,7 @@
 package eu.route20.hft.nos
 
+import eu.route20.hft.common.Notification
+import eu.route20.hft.sub.LocalSub
 import grizzled.slf4j.Logging
 import org.zeromq.ZMQ
 import scala.annotation.tailrec
@@ -54,5 +56,18 @@ object SimpleJeroMqPubSub extends App {
     if (j > 0 && !msg.equalsIgnoreCase("x")) {
       rec(i - 1)
     }
+  }
+}
+
+object LocalPubSub {
+  var subs: List[LocalSub] = List()
+
+  def subscribe(s: LocalSub) = {
+    subs = subs :+ s
+  }
+
+  def publish(n: Notification) = {
+    for (s <- subs)
+      s.notify(n)
   }
 }
