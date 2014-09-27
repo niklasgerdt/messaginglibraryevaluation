@@ -11,11 +11,11 @@ void term(int signum)
 }
 
 int main(){
-    printf("Setting up ZeroMQ pubsub-system\n");
     struct sigaction action;
     action.sa_handler = term;
     sigaction(SIGTERM, &action, NULL);
 
+    printf("Setting up ZeroMQ pubsub-system\n");
     int rc;
     void *context = zmq_ctx_new();
     void *subscriber = zmq_socket(context, ZMQ_SUB);
@@ -34,7 +34,7 @@ int main(){
     rc = zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0);
     assert (rc == 0);
     void *publisher = zmq_socket (context, ZMQ_PUB);
-    rc = zmq_bind(publisher, "tcp://168.1.1.1:5600");
+    rc = zmq_bind(publisher, "tcp://168.1.1.1:5601");
     assert (rc == 0);
     
     printf("ZeroMQ up\n");
