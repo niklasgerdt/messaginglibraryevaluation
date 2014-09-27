@@ -12,7 +12,7 @@ void term(int signum)
 
 //char events[100][10000];
 
-int main(){
+int main(int argc, char *argv[]){
     struct sigaction action;
     action.sa_handler = term;
     sigaction(SIGTERM, &action, NULL);
@@ -21,7 +21,7 @@ int main(){
     int rc;
     void *context = zmq_ctx_new();
     void *subscriber = zmq_socket(context, ZMQ_SUB);
-    rc = zmq_connect(subscriber, "tcp://168.1.1.2:5601");
+    rc = zmq_connect(subscriber, argv[1]);
     assert (rc == 0);
     rc = zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0);
     assert (rc == 0);

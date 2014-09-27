@@ -1,35 +1,29 @@
 #include <zmq.h>
 #include <assert.h>
-#include <signal.h>
 #include <stdio.h>
-
-int termsig = 0;
-void term(int signum)
-{
-    printf("Received SIGTERM, exiting...\n");
-    termsig = 1;
-}
-
-void pause(long nanos){
-
-}
+#include <stdlib.h>
+#include <string.h>
+#include "times.h"
+#include "terminator.h"
 
 int main(int argc, char *argv[]){
-    struct sigaction action;
-    action.sa_handler = term;
-    sigaction(SIGTERM, &action, NULL);
+    setPauseLenNanos(argv[1]);
+    setTerm();
  
     printf("Setting up ZeroMQ pubsub-system\n");
     int rc;
     void *context = zmq_ctx_new();
-    void *publisher = zmq_socket (context, ZMQ_PUB);
-    rc = zmq_bind (publisher, "tcp://*:5501");
-    assert (rc == 0);
+    void *publisher = zmq_socket(context, ZMQ_PUB);
+    rc = zmq_bind (publisher, argv[2]);
+    assert (rc == 0);   
+    printf("ZeroMQ up\n");  
+    printf("Pub bind to %s\n", argv[2]);
 
-    printf("ZeroMQ up\n");
     char buffer[100];
-    while (termsig == 0){
+    while (terminate() == 0){
         zmq_send(publisher, "test-message", 12, 0);
+        pause(currentNanos());
+        printf("sent\n");
     }
     printf("ZeroMQ down\n");
 
