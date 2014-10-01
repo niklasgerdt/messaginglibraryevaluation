@@ -32,3 +32,5 @@ project/plugins/project/
 .sbtconfig
 .idea/
 bin/
+.cproject
+build/
