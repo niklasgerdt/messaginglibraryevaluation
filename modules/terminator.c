@@ -1,18 +1,18 @@
 #include "terminator.h"
 #include <stdio.h>
+#include <signal.h>
+
+static struct sigaction action;
 
 void term(int signum) {
     printf("Received SIGTERM, exiting...\n");
-    termsig = 1;
+    killSignal = 1;
 }
 
-void setTerm(void){
+void initTerminator(void){
 	action.sa_handler = term;
 	sigaction(SIGTERM, &action, NULL);
-}
-
-int terminate(){
-	return termsig;
+    printf("Set up term signal handler\n");
 }
 
 

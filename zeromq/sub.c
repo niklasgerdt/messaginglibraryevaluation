@@ -2,22 +2,14 @@
 #include <assert.h>
 #include <signal.h>
 #include <stdio.h>
-
-int termsig = 0;
-void term(int signum)
-{
-    printf("Received SIGTERM, exiting...\n");
-    termsig = 1;
-}
+#include "../modules/terminator.h"
 
 //char events[100][10000];
 
 int main(int argc, char *argv[]){
-    struct sigaction action;
-    action.sa_handler = term;
-    sigaction(SIGTERM, &action, NULL);
+	initTerminator();
 
-    printf("Setting up ZeroMQ pubsub-system\n");
+	printf("Setting up ZeroMQ pubsub-system\n");
     int rc;
     void *context = zmq_ctx_new();
     void *subscriber = zmq_socket(context, ZMQ_SUB);
@@ -28,7 +20,7 @@ int main(int argc, char *argv[]){
 
     printf("ZeroMQ up\n");
     char buffer[100];
-    while (termsig == 0){
+    while (killSignal == 0){
         zmq_recv(subscriber, buffer, 100, 0);
         printf("%s\n", buffer);
     }

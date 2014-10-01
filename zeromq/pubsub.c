@@ -3,11 +3,11 @@
 #include <signal.h>
 #include <stdio.h>
 
-int termsig = 0;
+int killSignal = 0;
 void term(int signum)
 {
     printf("Received SIGTERM, exiting...\n");
-    termsig = 1;
+    killSignal = 1;
 }
 
 int main(){
@@ -39,7 +39,7 @@ int main(){
     
     printf("ZeroMQ up\n");
     char buffer[100];
-    while (termsig == 0){
+    while (killSignal == 0){
         zmq_recv(subscriber, buffer, 100, 0);
         zmq_send(publisher, buffer, 100, 0);
     }

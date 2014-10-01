@@ -22,25 +22,38 @@ int main(int argc, char *argv[]) {
 	printf("ZeroMQ up\n");
 	printf("Pub bind to %s\n", argv[2]);
 
-	struct eventHeader eh[MILLION];
-	struct event e;
 	long idCount = 0;
-	char buffer[100];
+	struct eventHeader eh;
+	struct event e;
 	while (terminate() == 0) {
-		strcpy(eh[idCount].pub, "pub1");
-		eh[idCount].id = idCount;
-		eh[idCount].created = currentNanos();
-		e.header = eh[idCount];
+//		strcpy(eh[idCount].pub, "pub1");
+//		eh[idCount].id = idCount;
+//		eh[idCount].created = currentNanos();
+//		e.header = eh[idCount];
+//		strcpy(e.data, dummyData);
+//		zmq_send(publisher, dummyData, sizeof(e), 0);
+//		eh[idCount].published = currentNanos();
+//		pause(currentNanos());
+//		if (idCount % MILLION == 0) {
+//			//async mongo header
+//		}
+//		idCount++;
+//		printf("sent\n");
+
+		strcpy(eh.source, "pub1");
+		eh.id = idCount;
+		eh.created = currentNanos();
+		e.header = eh;
 		strcpy(e.data, dummyData);
-
 		zmq_send(publisher, &e, sizeof(e), 0);
-
-		eh[idCount].published = currentNanos();
+		eh.published = currentNanos();
 		pause(currentNanos());
 		if (idCount % MILLION == 0) {
 			//async mongo header
 		}
+		idCount++;
 		printf("sent\n");
+
 	}
 	printf("ZeroMQ down\n");
 

@@ -1,21 +1,26 @@
 #ifndef EVENT_H_
 #define EVENT_H_
 
-#include <string.h>
-
-char dummyData[] = "agsggjbvoefmlä,äoeaaaagj,vaäsnkldfanhkäladjpoherlj'ahldj'ghaskäagmj'adfljäedäkäaskfä aä  ag äida";
+#include <time.h>
 
 struct eventHeader {
-	char pub[4];
-	unsigned long id;
-	long created;
-	long published;
-	long routed;
+	char *source;
+	char *destination;
+	char id[1000000000];
+//	struct timespec created;
+//	struct timespec published;
+//	struct timespec routed;
 };
 
 struct event {
 	struct eventHeader header;
 	char data[100];
 };
+
+void initEventStore(char *fileName);
+
+void storeEvent(struct event *e);
+
+void finalizeEventStore();
 
 #endif /* EVENT_H_ */
