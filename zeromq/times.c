@@ -1,29 +1,33 @@
+#include <time.h>
+#include <assert.h>
 #include "times.h"
-#include <stdio.h>
 
-long currentNanos() {
-	clock_gettime(CLOCK_REALTIME, ts);
-	return (long) ts.tv_nsec;
-}
+#define SECONDINNANOS 1000000000
 
 struct timespec currentTime() {
-	clock_gettime(CLOCK_REALTIME, ts);
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
 	return ts;
 }
 
-const char * currentTimeStr(void){
-
-}
-
-void pause(long current) {
-	//todo include seconds
-	if (currentNanos() < (pauseInNanos + current)) {
-		pause(current);
+static void pauseNanos(struct timespec t) {
+	struct timespec now = currentTime();
+	if (t.tv_sec > now.tv_sec) {
+		pauseNanos(t);
+	} else if (t.tv_sec == now.tv_sec && t.tv_nsec > now.tv_nsec) {
+		pauseNanos(t);
 	}
 }
 
-void setPauseLenNanos(const char *p) {
-	char *omit;
-	pauseInNanos = strtol(p, &omit, 10);
-	printf("Setting pause to %ld\n", pauseInNanos);
+void pause(long pause) {
+	assert(pause < SECONDINNANOS);
+	struct timespec t = currentTime();
+	if (t.tv_nsec + pause >= 1000000000) {
+		t.tv_sec++;
+		t.tv_nsec = t.tv_nsec + pause - SECONDINNANOS;
+	} else {
+		t.tv_nsec += pause;
+	}
+	pauseNanos(t);
 }
+

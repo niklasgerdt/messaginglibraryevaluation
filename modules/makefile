@@ -11,8 +11,10 @@ clean:
 
 compile:
 	gcc $(INC_DIRS) $(SYMBOLS) $(UNITY) unityspike.c -o build/spike.o
+	gcc filespike.c -o build/filespike.o
 
 test:
 	build/spike.o
+	build/filespike.o
 
 

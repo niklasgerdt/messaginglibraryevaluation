@@ -7,14 +7,14 @@ struct eventHeader {
 	char *source;
 	char *destination;
 	long id;
-//	struct timespec created;
-//	struct timespec published;
-//	struct timespec routed;
+	struct timespec created;
+	struct timespec published;
+	struct timespec routed;
 };
 
 struct event {
 	struct eventHeader header;
-	char data[100];
+	char *data;
 };
 
 void initEventStore(char *fileName);

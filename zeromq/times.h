@@ -3,18 +3,8 @@
 
 #include <time.h>
 
-struct timespec *ts;
+void pause(long pause);
 
-long pauseInNanos;
-
-struct timespec currentTime(void);
-
-long currentNanos(void);
-
-const char * currentTimeStr(void);
-
-void pause(long current);
-
-void setPauseLenNanos(const char *p);
+struct timespec currentTime();
 
 #endif /* TIMES_H_ */
