@@ -9,7 +9,7 @@ void test_pointerSpike(void) {
 	int *p;
 	int i = 5;
 	p = &i;
-	TEST_ASSERT_EQUAL(&i, p); //adresses match
+	TEST_ASSERT_EQUAL(&i, p); //addresses match
 	TEST_ASSERT_EQUAL(i, *p); // values match
 }
 

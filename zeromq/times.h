@@ -3,7 +3,7 @@
 
 #include <time.h>
 
-struct timespec ts;
+struct timespec *ts;
 
 long pauseInNanos;
 

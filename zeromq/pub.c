@@ -3,17 +3,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "times.h"
-#include "terminator.h"
+//#include "times.h"
+#include "../modules/terminator.h"
 #include "event.h"
 
 int MILLION = 1000000;
 
 int main(int argc, char *argv[]) {
-	setPauseLenNanos(argv[1]);
-	setTerm();
+	//setPauseLenNanos(argv[1]);
+	initTerminator();
+	initEventStore("EVENTSTORE");
 
-	printf("Setting up ZeroMQ pubsub-system\n");
+	printf("Setting up ZeroMQ pub-sub-system\n");
 	int rc;
 	void *context = zmq_ctx_new();
 	void *publisher = zmq_socket(context, ZMQ_PUB);
@@ -23,40 +24,19 @@ int main(int argc, char *argv[]) {
 	printf("Pub bind to %s\n", argv[2]);
 
 	long idCount = 0;
-	struct eventHeader eh;
-	struct event e;
-	while (terminate() == 0) {
-//		strcpy(eh[idCount].pub, "pub1");
-//		eh[idCount].id = idCount;
-//		eh[idCount].created = currentNanos();
-//		e.header = eh[idCount];
-//		strcpy(e.data, dummyData);
-//		zmq_send(publisher, dummyData, sizeof(e), 0);
-//		eh[idCount].published = currentNanos();
-//		pause(currentNanos());
-//		if (idCount % MILLION == 0) {
-//			//async mongo header
-//		}
-//		idCount++;
-//		printf("sent\n");
-
-		strcpy(eh.source, "pub1");
-		eh.id = idCount;
-		eh.created = currentNanos();
-		e.header = eh;
-		strcpy(e.data, dummyData);
+	while (killSignal == 0) {
+		struct eventHeader eh = { .source = "A", .id = idCount };
+		struct event e = { .header = eh };
+		memset(&e.data, 'A', sizeof(e.data));
 		zmq_send(publisher, &e, sizeof(e), 0);
-		eh.published = currentNanos();
-		pause(currentNanos());
-		if (idCount % MILLION == 0) {
-			//async mongo header
-		}
+	//	pause(currentNanos());
+		storeEvent(&e);
 		idCount++;
-		printf("sent\n");
-
+//		printf("sent %d\n", idCount);
 	}
 	printf("ZeroMQ down\n");
 
+	finalizeEventStore();
 	zmq_close(publisher);
 	zmq_ctx_destroy(context);
 	return 0;

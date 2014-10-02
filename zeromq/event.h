@@ -6,7 +6,7 @@
 struct eventHeader {
 	char *source;
 	char *destination;
-	char id[1000000000];
+	long id;
 //	struct timespec created;
 //	struct timespec published;
 //	struct timespec routed;

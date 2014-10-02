@@ -2,12 +2,12 @@
 #include <stdio.h>
 
 long currentNanos() {
-	clock_gettime(CLOCK_REALTIME, &ts);
+	clock_gettime(CLOCK_REALTIME, ts);
 	return (long) ts.tv_nsec;
 }
 
 struct timespec currentTime() {
-	clock_gettime(CLOCK_REALTIME, &ts);
+	clock_gettime(CLOCK_REALTIME, ts);
 	return ts;
 }
 
