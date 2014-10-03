@@ -1,1 +1,1 @@
-bin/pub 1000000 tcp://*:5002 NASDAQ 100
+bin/pub 1000 tcp://*:5003 NASDAQ 100

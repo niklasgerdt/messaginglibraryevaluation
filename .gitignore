@@ -34,3 +34,4 @@ project/plugins/project/
 bin/
 .cproject
 build/
+EVENTSTORE*

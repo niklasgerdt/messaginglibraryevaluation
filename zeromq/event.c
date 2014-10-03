@@ -4,9 +4,10 @@
 #include <string.h>
 #include <fcntl.h>
 #include "event.h"
+#include "times.h"
 
 #define MILLION 1000000
-#define EVENTSTORESIZE 100*MILLION
+#define EVENTSTORESIZE 10 * MILLION
 static int eventCount = 0;
 static struct eventHeader *events;
 
@@ -21,12 +22,17 @@ void initEventStore(char *fileName) {
 }
 
 static void write() {
+	struct timespec ts = currentTime();
+	printf("Stroring event to file %d: %lld.%09ld\n", f->_fileno, ts.tv_sec, ts.tv_nsec);
 	for (int i = 0; i < EVENTSTORESIZE; i++) {
 		fprintf(f, "%s;%s;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", events[i].source, events[i].destination, events[i].id,
 				events[i].created.tv_sec, events[i].created.tv_nsec, events[i].published.tv_sec,
 				events[i].published.tv_nsec, events[i].routed.tv_sec, events[i].routed.tv_nsec);
 	}
+	ts = currentTime();
+	printf("Events stored to file %d: %lld.%09ld\n", f->_fileno, ts.tv_sec, ts.tv_nsec);
 	eventCount = 0;
+	free(events);
 	events = malloc(EVENTSTORESIZE * sizeof(struct eventHeader));
 }
 

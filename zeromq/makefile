@@ -8,10 +8,13 @@ all: clean pub sub pubsub
 clean:
 	$(CLEANUP)
 
-pub:
-	gcc -D_GNU_SOURCE pub.c event.c ../modules/terminator.c times.c -o bin/pub -lzmq -std=c99 -g
+zmq: zmqpub zmqsub zmqpubsub
 
-sub:
-	gcc sub.c ../modules/terminator.c -o bin/sub -lzmq
+zmqpub:
+	gcc -D_GNU_SOURCE pub.c zmqpubsub.c event.c ../modules/terminator.c times.c -o bin/zmqpub -lzmq -std=c99
 
-pubsub:
+zmqsub:
+	gcc -D_GNU_SOURCE sub.c zmqpubsub.c event.c ../modules/terminator.c times.c -o bin/zmqsub -lzmq -std=c99
+
+zmqpubsub:
+	gcc -D_GNU_SOURCE pubsub.c zmqpubsub.c ../modules/terminator.c -o bin/zmqpubsub -lzmq -std=c99

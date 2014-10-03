@@ -1,52 +1,30 @@
 #include <zmq.h>
 #include <assert.h>
-#include <signal.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "../modules/terminator.h"
+#include "pubsub.h"
 
-int killSignal = 0;
-void term(int signum) {
-	printf("Received SIGTERM, exiting...\n");
-	killSignal = 1;
-}
+int main(int argc, char *argv[]) {
+	char *pub = argv[1];
+	int msgLen = atoi(argv[2]);
+	char *sub = argv[3];
+	initTerminator();
+	initPub(pub, "");
+	initSub(sub, "");
+	printf("Running with params: %s, %s, %d\n", pub, sub, msgLen);
 
-int main() {
-	struct sigaction action;
-	action.sa_handler = term;
-	sigaction(SIGTERM, &action, NULL);
-
-	printf("Setting up ZeroMQ pubsub-system\n");
-	int rc;
-	void *context = zmq_ctx_new();
-	void *subscriber = zmq_socket(context, ZMQ_SUB);
-	rc = zmq_connect(subscriber, "tcp://168.1.1.2:5501");
-	assert(rc == 0);
-	rc = zmq_connect(subscriber, "tcp://168.1.1.2:5502");
-	assert(rc == 0);
-	rc = zmq_connect(subscriber, "tcp://168.1.1.2:5503");
-	assert(rc == 0);
-	rc = zmq_connect(subscriber, "tcp://168.1.1.2:5504");
-	assert(rc == 0);
-	rc = zmq_connect(subscriber, "tcp://168.1.1.2:5505");
-	assert(rc == 0);
-	rc = zmq_connect(subscriber, "tcp://168.1.1.2:5506");
-	assert(rc == 0);
-	rc = zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0);
-	assert(rc == 0);
-	void *publisher = zmq_socket(context, ZMQ_PUB);
-	rc = zmq_bind(publisher, "tcp://168.1.1.1:5601");
-	assert(rc == 0);
-
-	printf("ZeroMQ up\n");
 	char buffer[100];
+	void *buf;
 	while (killSignal == 0) {
-		zmq_recv(subscriber, buffer, 100, 0);
-		zmq_send(publisher, buffer, 100, 0);
+		subRaw(buf);
+		printf("mediating %s", buf);
+		pubRaw(buf);
 	}
-	printf("ZeroMQ down\n");
 
-	zmq_close(subscriber);
-	zmq_close(publisher);
-	zmq_ctx_destroy(context);
+	destroyPub();
+	destroySub();
 	return 0;
+
 }
 
