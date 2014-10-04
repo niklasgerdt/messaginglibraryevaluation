@@ -3,9 +3,11 @@
 
 #include <time.h>
 
+extern int eventMesasgeLength;
+
 struct eventHeader {
-	char *source;
-	char *destination;
+	char source;
+	char destination;
 	long id;
 	struct timespec created;
 	struct timespec published;
@@ -14,7 +16,7 @@ struct eventHeader {
 
 struct event {
 	struct eventHeader header;
-	char *data;
+	char data[eventMesasgeLength];
 };
 
 void initEventStore(char *fileName);

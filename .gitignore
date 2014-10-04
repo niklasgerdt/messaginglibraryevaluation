@@ -35,3 +35,4 @@ bin/
 .cproject
 build/
 EVENTSTORE*
+*.o

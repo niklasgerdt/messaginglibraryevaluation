@@ -10,7 +10,7 @@ static char *pubchannel;
 static void *subscriber;
 //static char *subchannel;
 
-void initPub(const char *addr, char *channel) {
+void initPub(const char *addr, char channel) {
 	printf("Setting up ZeroMQ pub-sub-system\n");
 	pubchannel = channel;
 	context = zmq_ctx_new();
@@ -34,7 +34,7 @@ void destroyPub() {
 	printf("ZeroMQ down\n");
 }
 
-void initSub(const char *addr, char *channel) {
+void initSub(const char *addr, char channel) {
 	printf("Setting up ZeroMQ pubsub-system\n");
 	context = zmq_ctx_new();
 	subscriber = zmq_socket(context, ZMQ_SUB);

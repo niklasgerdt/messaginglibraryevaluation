@@ -18,3 +18,7 @@ zmqsub:
 
 zmqpubsub:
 	gcc -D_GNU_SOURCE pubsub.c zmqpubsub.c ../modules/terminator.c -o bin/zmqpubsub -lzmq -std=c99
+	
+tests:
+	gcc test/sizeofspike.c -o test/sizeofspike.o
+	test/sizeofspike.o
