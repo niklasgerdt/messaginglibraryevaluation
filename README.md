@@ -9,4 +9,3 @@ Systems under evaluation
 * Nanomsg
 * Apache Kafka
 * Kestrel
-* Akka
