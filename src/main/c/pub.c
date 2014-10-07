@@ -5,7 +5,7 @@
 #include <string.h>
 #include "times.h"
 #include "pubsub.h"
-#include "../modules/terminator.h"
+#include "modules/terminator.h"
 #include "event.h"
 
 int eventMesasgeLength;
@@ -21,11 +21,11 @@ int main(int argc, char *argv[]) {
 	printf("Running with params: %d, %s, %s, %d\n", pauseNanos, address, channel, eventMesasgeLength);
 
 	long idCount = 0;
-	char eData[eventMesasgeLength];
+	char *eData = malloc(eventMesasgeLength * sizeof(char));
 	memset(eData, 'A', eventMesasgeLength);
 	while (killSignal == 0) {
 		struct eventHeader eh = { .source = channel, .id = idCount, .created = currentTime() };
-		struct event e = { .header = eh, .data = eData };
+		struct event e = { .header = eh, .dataLength=eventMesasgeLength, .data = eData };
 		pub(&e);
 		e.header.published = currentTime();
 		pause(pauseNanos);

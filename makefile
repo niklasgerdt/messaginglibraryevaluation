@@ -1,3 +1,5 @@
+MAIN=src/main/c/
+TEST=src/test/c
 UNITY_ROOT=../src
 INC_DIRS=-Isrc -I$(UNITY_ROOT)
 SYMBOLS=-DTEST
@@ -11,7 +13,7 @@ clean:
 zmq: zmqpub zmqsub zmqpubsub
 
 zmqpub:
-	gcc -D_GNU_SOURCE pub.c zmqpubsub.c event.c ../modules/terminator.c times.c -o bin/zmqpub -lzmq -std=c99
+	gcc -D_GNU_SOURCE $(MAIN)pub.c $(MAIN)zmqpubsub.c $(MAIN)event.c $(MAIN)modules/terminator.c $(MAIN)times.c -o bin/zmqpub -lzmq -std=c99
 
 zmqsub:
 	gcc -D_GNU_SOURCE sub.c zmqpubsub.c event.c ../modules/terminator.c times.c -o bin/zmqsub -lzmq -std=c99

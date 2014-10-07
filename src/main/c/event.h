@@ -3,8 +3,6 @@
 
 #include <time.h>
 
-extern int eventMesasgeLength;
-
 struct eventHeader {
 	char source;
 	char destination;
@@ -16,7 +14,8 @@ struct eventHeader {
 
 struct event {
 	struct eventHeader header;
-	char data[eventMesasgeLength];
+	int dataLength;
+	char *data;
 };
 
 void initEventStore(char *fileName);

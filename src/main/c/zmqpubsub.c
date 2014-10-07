@@ -12,7 +12,7 @@ static void *subscriber;
 
 void initPub(const char *addr, char channel) {
 	printf("Setting up ZeroMQ pub-sub-system\n");
-	pubchannel = channel;
+	pubchannel = &channel;
 	context = zmq_ctx_new();
 	publisher = zmq_socket(context, ZMQ_PUB);
 	assert(zmq_bind(publisher, addr) == 0);
