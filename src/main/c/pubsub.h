@@ -1,7 +1,7 @@
 #ifndef PUBSUB_H_
 #define PUBSUB_H_
 
-#include "event.h"
+#include "mod/event.h"
 
 void initPub(const char *address, char channel);
 

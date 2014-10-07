@@ -1,12 +1,9 @@
-#include <zmq.h>
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "times.h"
+#include "mod/util.h"
 #include "pubsub.h"
-#include "modules/terminator.h"
-#include "event.h"
 
 int eventMesasgeLength;
 

@@ -4,7 +4,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include "event.h"
-#include "times.h"
+#include "util.h"
 
 #define MILLION 1000000
 #define EVENTSTORESIZE 10 * MILLION

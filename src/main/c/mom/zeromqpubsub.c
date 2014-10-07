@@ -1,18 +1,18 @@
-#include "pubsub.h"
 #include <zmq.h>
 #include <assert.h>
 #include <stdio.h>
-#include "event.h"
+#include "../mod/event.h"
+#include "../pubsub.h"
 
 static void *context;
 static void *publisher;
-static char *pubchannel;
 static void *subscriber;
+static char pubchannel;
 //static char *subchannel;
 
 void initPub(const char *addr, char channel) {
 	printf("Setting up ZeroMQ pub-sub-system\n");
-	pubchannel = &channel;
+	pubchannel = channel;
 	context = zmq_ctx_new();
 	publisher = zmq_socket(context, ZMQ_PUB);
 	assert(zmq_bind(publisher, addr) == 0);

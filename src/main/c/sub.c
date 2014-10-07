@@ -1,15 +1,13 @@
-#include <zmq.h>
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../modules/terminator.h"
-#include "event.h"
+#include "mod/event.h"
 #include "pubsub.h"
-#include "times.h"
+#include "mod/util.h"
 
 int main(int argc, char *argv[]) {
 	char *address = argv[1];
-	char *channel = argv[2];
+	char channel = argv[2][0];
 	int msgLen = atoi(argv[3]);
 	initTerminator();
 	initEventStore("EVENTSTORE-SUB");
