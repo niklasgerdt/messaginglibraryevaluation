@@ -22,5 +22,5 @@ zmqpubsub:
 	gcc -D_GNU_SOURCE $(MAIN)pubsub.c $(MAIN)mom/zeromqpubsub.c $(MAIN)mod/util.c -o bin/zmqpubsub -lzmq -std=c99
 	
 tests:
-	gcc test/sizeofspike.c -o test/sizeofspike.o
-	test/sizeofspike.o
+	gcc $(TEST)sizeofspike.c -o bin/sizeofspike.o
+	bin/sizeofspike.o

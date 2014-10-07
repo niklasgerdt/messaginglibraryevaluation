@@ -5,28 +5,27 @@
 #include "mod/util.h"
 #include "pubsub.h"
 
-int eventMesasgeLength;
-
 int main(int argc, char *argv[]) {
 	long pauseNanos = atol(argv[1]);
 	char *address = argv[2];
 	char channel = argv[3][0];
-	eventMesasgeLength = atoi(argv[4]);
+	int eventMessageLength = atoi(argv[4]);
 	initTerminator();
-	initEventStore("EVENTSTORE-PUB");
+	initEventStore("EVENTSTORE-PUB-" + channel);
 	initPub(address, channel);
-	printf("Running with params: %d, %s, %s, %d\n", pauseNanos, address, channel, eventMesasgeLength);
+	printf("Running with params: %d, %s, %s, %d\n", pauseNanos, address, channel, eventMessageLength);
 
 	long idCount = 0;
-	char *eData = malloc(eventMesasgeLength * sizeof(char));
-	memset(eData, 'A', eventMesasgeLength);
+	size_t size = sizeof(struct event) + eventMessageLength * sizeof(char);
+	char *eData = malloc(eventMessageLength * sizeof(char));
+	memset(eData, 'A', eventMessageLength * sizeof(char));
 	while (killSignal == 0) {
 		struct eventHeader eh = { .source = channel, .id = idCount, .created = currentTime() };
-		struct event e = { .header = eh, .dataLength=eventMesasgeLength, .data = eData };
-		pub(&e);
+		struct event e = { .header = eh, .dataLength = eventMessageLength, .data = eData };
+		pub(&e, size);
 		e.header.published = currentTime();
-		pause(pauseNanos);
 		storeEvent(&e);
+		pause(pauseNanos);
 		idCount++;
 	}
 

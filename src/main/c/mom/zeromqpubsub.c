@@ -19,9 +19,10 @@ void initPub(const char *addr, char channel) {
 	printf("Pub bind to %s\n", addr);
 }
 
-void pub(struct event *e) {
+void pub(struct event *e, size_t size) {
+
 //TODO ADD CHANNEL AS PART
-	zmq_send(publisher, &e, sizeof(e), 0);
+	zmq_send(publisher, &e, size, 0);
 }
 
 void pubRaw(const void *b) {

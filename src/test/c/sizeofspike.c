@@ -31,6 +31,14 @@ int main(int argc, char *argv) {
 	char ca2[i];
 	assert(0 == sizeof(ca2));
 
+	struct d3 {
+		int strLen;
+		char *str;
+	};
+	struct d3 d4 = { .strLen = 100, .str = "" };
+	assert(16 == sizeof(d4));
+	assert(116 == sizeof(d4) + d4.strLen * sizeof(char));
+
 	return 0;
 }
 

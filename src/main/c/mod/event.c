@@ -10,7 +10,6 @@
 #define EVENTSTORESIZE 10 * MILLION
 static int eventCount = 0;
 static struct eventHeader *events;
-
 static FILE *f;
 
 void initEventStore(char *fileName) {

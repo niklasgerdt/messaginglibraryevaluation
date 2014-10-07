@@ -5,7 +5,7 @@
 
 void initPub(const char *address, char channel);
 
-void pub(struct event *e);
+void pub(struct event *e, size_t size);
 
 void pubRaw(const void *b);
 
