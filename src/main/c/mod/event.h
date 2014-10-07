@@ -18,7 +18,7 @@ struct event {
 	char *data;
 };
 
-void initEventStore(char *fileName);
+void initEventStore(const char *fileName);
 
 void storeEvent(struct event *e);
 

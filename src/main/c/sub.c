@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[]) {
 	char *address = argv[1];
-	char channel = argv[2][0];
+	char *channel = argv[2];
 	int msgLen = atoi(argv[3]);
 	initTerminator();
 	initEventStore("EVENTSTORE-SUB");

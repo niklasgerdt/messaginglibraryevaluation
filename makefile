@@ -5,7 +5,7 @@ INC_DIRS=-Isrc -I$(UNITY_ROOT)
 SYMBOLS=-DTEST
 CLEANUP = rm -f bin/*
 
-all: clean pub sub pubsub
+all: clean zmq
 
 clean:
 	$(CLEANUP)
@@ -21,6 +21,9 @@ zmqsub:
 zmqpubsub:
 	gcc -D_GNU_SOURCE $(MAIN)pubsub.c $(MAIN)mom/zeromqpubsub.c $(MAIN)mod/util.c -o bin/zmqpubsub -lzmq -std=c99
 	
+runzmqspike: all
+	bin/zmqpub 1000 tcp://*:5000 NASDAQ 100
+
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/sizeofspike.o
 	bin/sizeofspike.o

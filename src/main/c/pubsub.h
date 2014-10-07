@@ -3,7 +3,7 @@
 
 #include "mod/event.h"
 
-void initPub(const char *address, char channel);
+void initPub(const char *address, const char *channel);
 
 void pub(struct event *e, size_t size);
 
@@ -15,7 +15,7 @@ void sub(struct event *e);
 
 void subRaw(void *b);
 
-void initSub(const char *address, char channel);
+void initSub(const char *address, const char *channel);
 
 void destroySub(void);
 

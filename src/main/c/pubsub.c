@@ -4,7 +4,7 @@
 #include "mod/util.h"
 #include "pubsub.h"
 
-char channel = '\0';
+static char *channel = "\0";
 
 int main(int argc, char *argv[]) {
 	char *pub = argv[1];

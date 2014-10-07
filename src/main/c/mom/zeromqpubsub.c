@@ -10,9 +10,9 @@ static void *subscriber;
 static char pubchannel;
 //static char *subchannel;
 
-void initPub(const char *addr, char channel) {
+void initPub(const char *addr, const char *channel) {
 	printf("Setting up ZeroMQ pub-sub-system\n");
-	pubchannel = channel;
+	pubchannel = channel[0];
 	context = zmq_ctx_new();
 	publisher = zmq_socket(context, ZMQ_PUB);
 	assert(zmq_bind(publisher, addr) == 0);
@@ -22,7 +22,7 @@ void initPub(const char *addr, char channel) {
 void pub(struct event *e, size_t size) {
 
 //TODO ADD CHANNEL AS PART
-	zmq_send(publisher, &e, size, 0);
+	zmq_send(publisher, e, size, 0);
 }
 
 void pubRaw(const void *b) {
@@ -35,7 +35,7 @@ void destroyPub() {
 	printf("ZeroMQ down\n");
 }
 
-void initSub(const char *addr, char channel) {
+void initSub(const char *addr, const char *channel) {
 	printf("Setting up ZeroMQ pubsub-system\n");
 	context = zmq_ctx_new();
 	subscriber = zmq_socket(context, ZMQ_SUB);

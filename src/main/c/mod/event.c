@@ -8,11 +8,13 @@
 
 #define MILLION 1000000
 #define EVENTSTORESIZE 10 * MILLION
+
 static int eventCount = 0;
 static struct eventHeader *events;
 static FILE *f;
 
-void initEventStore(char *fileName) {
+void initEventStore(const char *fileName) {
+	printf("Opening file %s\n", fileName);
 	f = fopen(fileName, "w");
 	if (f == NULL) {
 		printf("Error opening file!\n");
@@ -24,9 +26,9 @@ static void write() {
 	struct timespec ts = currentTime();
 	printf("Stroring event to file %d: %lld.%09ld\n", f->_fileno, ts.tv_sec, ts.tv_nsec);
 	for (int i = 0; i < EVENTSTORESIZE; i++) {
-		fprintf(f, "%s;%s;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", events[i].source, events[i].destination, events[i].id,
-				events[i].created.tv_sec, events[i].created.tv_nsec, events[i].published.tv_sec,
-				events[i].published.tv_nsec, events[i].routed.tv_sec, events[i].routed.tv_nsec);
+		fprintf(f, "%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", events[i].source, events[i].destination, events[i].id,
+				events[i].created.tv_sec, events[i].created.tv_nsec, events[i].published.tv_sec, events[i].published.tv_nsec,
+				events[i].routed.tv_sec, events[i].routed.tv_nsec);
 	}
 	ts = currentTime();
 	printf("Events stored to file %d: %lld.%09ld\n", f->_fileno, ts.tv_sec, ts.tv_nsec);
