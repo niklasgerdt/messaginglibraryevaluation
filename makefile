@@ -22,11 +22,11 @@ zmqpubsub:
 	gcc -D_GNU_SOURCE $(MAIN)pubsub.c $(MAIN)mom/zeromqpubsub.c $(MAIN)mod/util.c -o bin/zmqpubsub -lzmq -std=c99
 	
 runzmq-N1-C1-P1000000: all
-	bin/zmqpub 1000000 tcp://168.0.0.1:5001 NASDAQ 100 &
-	bin/zmqsub tcp://168.0.0.2:6001 NASDAQ 100 &
+	bin/zmqpub 1000000 tcp://168.1.1.1:5001 NASDAQ 100 &
+	bin/zmqsub tcp://168.1.1.2:6001 NASDAQ 100 &
 
 runzmq-N2: all
-	bin/zmqpubsub tcp://168.0.0.2:6001 tcp://168.0.0.1:5001 &
+	bin/zmqpubsub tcp://168.1.1.2:6001 tcp://168.1.1.1:5001 &
 
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/test.o
