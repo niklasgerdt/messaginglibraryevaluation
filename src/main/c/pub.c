@@ -10,12 +10,12 @@ int main(int argc, char *argv[]) {
 	char *address = argv[2];
 	const char *channel = argv[3];
 	int eventMessageLength = atoi(argv[4]);
-	char eventFile[20] = "logs/EVENTSTOREPUB";
+	char eventFile[20] = "logs/EVENTSTORE-PUB-";
 	strcat(eventFile, channel);
 
-	initTerminator();
 	initEventStore(eventFile);
 	initPub(address, channel);
+	initTerminator();
 	printf("Running with params: \npause %d, \naddress %s, \nchannel %s, \nmsglen %d\n", pauseNanos, address, channel,
 			eventMessageLength);
 

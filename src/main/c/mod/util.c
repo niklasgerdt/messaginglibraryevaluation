@@ -12,6 +12,7 @@ struct timespec currentTime() {
 	return ts;
 }
 
+//busy wait, because operating systems do not support pausing in nanosecond precision.
 static void pauseNanos(struct timespec t) {
 	struct timespec now = currentTime();
 	if (t.tv_sec > now.tv_sec) {

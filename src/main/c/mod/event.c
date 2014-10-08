@@ -25,7 +25,7 @@ void initEventStore(const char *fileName) {
 static void write() {
 	struct timespec ts = currentTime();
 	printf("Stroring event to file %d: %lld.%09ld\n", f->_fileno, ts.tv_sec, ts.tv_nsec);
-	for (int i = 0; i < EVENTSTORESIZE; i++) {
+	for (int i = 0; i < eventCount; i++) {
 		fprintf(f, "%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", events[i].source, events[i].destination, events[i].id,
 				events[i].created.tv_sec, events[i].created.tv_nsec, events[i].published.tv_sec, events[i].published.tv_nsec,
 				events[i].routed.tv_sec, events[i].routed.tv_nsec);

@@ -11,11 +11,13 @@ void pubRaw(const void *b);
 
 void destroyPub(void);
 
-void sub(struct event *e);
+void sub(struct event *e, size_t size);
 
 void subRaw(void *b);
 
 void initSub(const char *address, const char *channel);
+
+void addSub(const char *address);
 
 void destroySub(void);
 
