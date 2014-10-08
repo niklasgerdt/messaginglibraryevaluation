@@ -7,7 +7,7 @@
 #include "util.h"
 
 #define MILLION 1000000
-#define EVENTSTORESIZE MILLION
+#define EVENTSTORESIZE MILLION/100
 
 static int eventCount = 0;
 static struct eventHeader *events;
@@ -37,11 +37,11 @@ static void write() {
 	events = malloc(EVENTSTORESIZE * sizeof(struct eventHeader));
 }
 
-void storeEvent(struct event *e) {
+void storeEvent(struct event e) {
 	if (eventCount == EVENTSTORESIZE) {
 		write();
 	}
-	events[eventCount] = e->header;
+	events[eventCount] = e.header;
 	eventCount++;
 }
 

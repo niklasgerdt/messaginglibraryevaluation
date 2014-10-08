@@ -20,7 +20,7 @@ struct event {
 
 void initEventStore(const char *fileName);
 
-void storeEvent(struct event *e);
+void storeEvent(struct event e);
 
 void finalizeEventStore();
 

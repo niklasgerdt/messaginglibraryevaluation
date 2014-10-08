@@ -17,20 +17,21 @@ int main(int argc, char *argv[]) {
 
 	initPub(pubAddr, channel);
 	initSub(subAddr[0], channel);
-	addSub(subAddr[1]);
-	addSub(subAddr[2]);
-	addSub(subAddr[3]);
+	int i = 1;
+	while (subAddr[1] != NULL && i < 5) {
+		addSub(subAddr[i]);
+		i++;
+	}
 	initTerminator();
 
 	size_t size = sizeof(struct event) + stockEventLen * sizeof(char);
 
 	while (killSignal == 0) {
-		struct event e;
-		sub(&e, size);
+		struct event e = sub(size);
 //		printf("%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", e->header.source, e->header.destination, e->header.id,
 //				e->header.created.tv_sec, e->header.created.tv_nsec, e->header.published.tv_sec,
 //				e->header.published.tv_nsec, e->header.routed.tv_sec, e->header.routed.tv_nsec);
-		pub(&e, size);
+		pub(e, size);
 	}
 
 	printf("destroying connections");

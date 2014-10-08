@@ -19,17 +19,13 @@ void initPub(const char *addr, const char *channel) {
 	printf("Pub bind to %s\n", addr);
 }
 
-void pub(struct event *e, size_t size) {
+void pub(struct event e, size_t size) {
 
 //TODO ADD CHANNEL AS PART
 //	printf("%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", e->header.source, e->header.destination, e->header.id,
 //			e->header.created.tv_sec, e->header.created.tv_nsec, e->header.published.tv_sec,
 //			e->header.published.tv_nsec, e->header.routed.tv_sec, e->header.routed.tv_nsec);
-	zmq_send(publisher, e, size, 0);
-}
-
-void pubRaw(const void *b) {
-	zmq_send(publisher, b, sizeof(b), 0);
+	zmq_send(publisher, &e, size, 0);
 }
 
 void destroyPub() {
@@ -53,12 +49,10 @@ void addSub(const char *addr){
 	printf("Sub connected to %s\n", addr);
 }
 
-void sub(struct event *e, size_t size) {
-	zmq_recv(subscriber, e, size, 0);
-}
-
-void subRaw(void *b) {
-	zmq_recv(publisher, b, sizeof(b), 0);
+struct event sub(size_t size) {
+	struct event e;
+	zmq_recv(subscriber, &e, size, 0);
+	return e;
 }
 
 void destroySub() {

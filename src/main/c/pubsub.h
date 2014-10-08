@@ -5,15 +5,11 @@
 
 void initPub(const char *address, const char *channel);
 
-void pub(struct event *e, size_t size);
-
-void pubRaw(const void *b);
+void pub(struct event e, size_t size);
 
 void destroyPub(void);
 
-void sub(struct event *e, size_t size);
-
-void subRaw(void *b);
+struct event sub(size_t size);
 
 void initSub(const char *address, const char *channel);
 

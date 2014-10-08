@@ -28,9 +28,9 @@ int main(int argc, char *argv[]) {
 		struct eventHeader eh = { .source = channel[0], .id = idCount, .created = currentTime() };
 		struct event e = { .header = eh, .dataLength = eventMessageLength, .data = eData };
 
-		pub(&e, size);
+		pub(e, size);
 		e.header.published = currentTime();
-		storeEvent(&e);
+		storeEvent(e);
 		pause(pauseNanos);
 		idCount++;
 	}
