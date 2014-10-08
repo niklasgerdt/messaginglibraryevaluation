@@ -25,18 +25,16 @@ int main(int argc, char *argv[]) {
 	struct event *e;
 
 	while (killSignal == 0) {
-		e = (struct event *) malloc(size);
-		sub(e, size);
-		e->header.destination = chn;
-		e->header.routed = currentTime();
-//		printf("%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", e->header.source, e->header.destination, e->header.id,
-//				e->header.created.tv_sec, e->header.created.tv_nsec, e->header.published.tv_sec,
-//				e->header.published.tv_nsec, e->header.routed.tv_sec, e->header.routed.tv_nsec);
-		storeEvent(e);
-		e = (struct event *) realloc(e, size);
+		struct event e;
+		sub(&e, size);
+		e.header.destination = chn;
+		e.header.routed = currentTime();
+//		printf("%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", e.header.source, e.header.destination, e.header.id,
+//				e.header.created.tv_sec, e.header.created.tv_nsec, e.header.published.tv_sec,
+//				e.header.published.tv_nsec, e.header.routed.tv_sec, e.header.routed.tv_nsec);
+		storeEvent(&e);
 	}
 
-	free(e);
 	finalizeEventStore();
 	destroySub();
 	return 0;

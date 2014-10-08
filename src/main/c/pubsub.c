@@ -23,19 +23,16 @@ int main(int argc, char *argv[]) {
 	initTerminator();
 
 	size_t size = sizeof(struct event) + stockEventLen * sizeof(char);
-	struct event *e;
 
 	while (killSignal == 0) {
-		e = (struct event *) malloc(size);
-		sub(e, size);
+		struct event e;
+		sub(&e, size);
 //		printf("%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", e->header.source, e->header.destination, e->header.id,
 //				e->header.created.tv_sec, e->header.created.tv_nsec, e->header.published.tv_sec,
 //				e->header.published.tv_nsec, e->header.routed.tv_sec, e->header.routed.tv_nsec);
-		pub(e, size);
-		e = (struct event *) realloc(e, size);
+		pub(&e, size);
 	}
 
-	free(e);
 	printf("destroying connections");
 	destroyPub();
 	destroySub();
