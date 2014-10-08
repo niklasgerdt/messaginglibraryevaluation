@@ -50,6 +50,7 @@ void initSub(const char *addr, const char *channel) {
 
 void addSub(const char *addr){
 	assert(zmq_connect(subscriber, addr) == 0);
+	printf("Sub connected to %s\n", addr);
 }
 
 void sub(struct event *e, size_t size) {
@@ -62,7 +63,9 @@ void subRaw(void *b) {
 
 void destroySub() {
 	zmq_close(subscriber);
-	zmq_ctx_destroy(context);
+	if (context != NULL){
+		zmq_ctx_destroy(context);
+	}
 	printf("ZeroMQ down\n");
 }
 
