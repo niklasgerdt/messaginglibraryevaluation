@@ -22,7 +22,8 @@ zmqpubsub:
 	gcc -D_GNU_SOURCE $(MAIN)pubsub.c $(MAIN)mom/zeromqpubsub.c $(MAIN)mod/util.c -o bin/zmqpubsub -lzmq -std=c99
 	
 runzmqspike: all
-	bin/zmqpub 1000 tcp://*:5000 NASDAQ 100
+	bin/zmqpub 10000000 tcp://*:5000 NASDAQ 100 &
+	bin/zmqsub tcp://localhost:5000 NASDAQ 100 &
 
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/sizeofspike.o
