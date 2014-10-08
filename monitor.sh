@@ -1,2 +1,2 @@
-sar -n DEV,EDEV 1 -o sar_net
-sar -P ALL 1 -o sar_cpu
+sar -A 1 -o logs/SAR >/dev/null 2>&1 &
+nicstat -i eth0 -U 1 > logs/NICSTAT &
