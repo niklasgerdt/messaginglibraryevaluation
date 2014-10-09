@@ -22,10 +22,10 @@ zmqpubsub:
 	gcc -D_GNU_SOURCE $(MAIN)pubsub.c $(MAIN)mom/zeromqpubsub.c $(MAIN)mod/util.c -o bin/zmqpubsub -lzmq -std=c99
 	
 runzmq-N1-C1-P1000000: all
-	bin/zmqpub 1000000 tcp://168.1.1.1:5001 A 100 &
-	bin/zmqpub 1000000 tcp://168.1.1.1:5002 B 100 &
-	bin/zmqpub 1000000 tcp://168.1.1.1:5003 C 100 &
-	bin/zmqpub 1000000 tcp://168.1.1.1:5004 D 100 &
+	bin/zmqpub 10000000 tcp://168.1.1.1:5001 A 100 &
+	bin/zmqpub 10000000 tcp://168.1.1.1:5002 B 100 &
+	bin/zmqpub 10000000 tcp://168.1.1.1:5003 C 100 &
+	bin/zmqpub 10000000 tcp://168.1.1.1:5004 D 100 &
 	bin/zmqsub tcp://168.1.1.2:6001 A 100 &
 	bin/zmqsub tcp://168.1.1.2:6001 B 100 &
 	bin/zmqsub tcp://168.1.1.2:6001 C 100 &
