@@ -21,13 +21,12 @@ int main(int argc, char *argv[]) {
 
 	size_t size = sizeof(struct event) + eventMessageLength * sizeof(char);
 	char *eData = malloc(eventMessageLength * sizeof(char));
-	memset(eData, 'A', eventMessageLength * sizeof(char));
+			memset(eData, 'A', eventMessageLength * sizeof(char));
 
 	long idCount = 0;
 	while (killSignal == 0) {
 		struct eventHeader eh = { .source = channel[0], .id = idCount, .created = currentTime() };
 		struct event e = { .header = eh, .dataLength = eventMessageLength, .data = eData };
-
 		pub(e, size);
 		e.header.published = currentTime();
 		storeEvent(e);

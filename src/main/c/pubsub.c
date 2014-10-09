@@ -27,20 +27,6 @@ int main(int argc, char *argv[]) {
 	size_t size = sizeof(struct event) + stockEventLen * sizeof(char);
 
 	while (killSignal == 0) {
-//		struct event e = sub(size);
-//		printf("%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", e->header.source, e->header.destination, e->header.id,
-//				e->header.created.tv_sec, e->header.created.tv_nsec, e->header.published.tv_sec,
-//				e->header.published.tv_nsec, e->header.routed.tv_sec, e->header.routed.tv_nsec);
-//		printf("%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", e.header.source, e.header.destination, e.header.id,
-//				e.header.created.tv_sec, e.header.created.tv_nsec, e.header.published.tv_sec,
-//				e.header.published.tv_nsec, e.header.routed.tv_sec, e.header.routed.tv_nsec);
-//		struct eventHeader eh = { .source = e.header.source, .id = e.header.id };
-//		struct event *ee = malloc(size);
-//		ee = &e;
-//		{ .header = eh, .dataLength = e.dataLength, .data = e.data };
-//		pub(*ee, size);
-//		free(ee);
-
 		med(size);
 	}
 
