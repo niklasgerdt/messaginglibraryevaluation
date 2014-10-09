@@ -7,6 +7,8 @@ void initPub(const char *address, const char *channel);
 
 void pub(struct event e, size_t size);
 
+void med(size_t size);
+
 void destroyPub(void);
 
 struct event sub(size_t size);
