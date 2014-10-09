@@ -36,3 +36,4 @@ bin/
 build/
 EVENTSTORE*
 *.o
+logs/
