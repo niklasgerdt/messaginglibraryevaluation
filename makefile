@@ -5,10 +5,13 @@ INC_DIRS=-Isrc -I$(UNITY_ROOT)
 SYMBOLS=-DTEST
 CLEANUP = rm -f bin/*
 
-all: clean zmq
+all: clean zmq nano
 
 clean:
 	$(CLEANUP)
+
+kill-run:
+	kill $server $sub1 $sub2 $sub3 $sub4 $pub1 $pub2 $pub3 $pub4
 
 zmq: zmqpub zmqsub zmqpubsub
 
@@ -40,9 +43,9 @@ runzmq-spike: all
 #	bin/zmqsub tcp://localhost:6001 A &
 #	bin/zmqsub tcp://localhost:6001 A &
 	bin/zmqsub tcp://localhost:6001 BC &
-	bin/zmqpub 1000000 tcp://*:5001 A 100 &
-	bin/zmqpub 1000000 tcp://*:5002 B 100 &
-	bin/zmqpub 1000000 tcp://*:5003 C 100 &
+#	bin/zmqpub 1000000 tcp://*:5001 A 100 &
+#	bin/zmqpub 1000000 tcp://*:5002 B 100 &
+	bin/zmqpub 100000000 tcp://*:5003 C 100 &
 #	bin/zmqpub 100000 tcp://*:5004 D 100 &
 	
 nano: nanopub nanosub nanopubsub
@@ -55,6 +58,17 @@ nanosub:
 
 nanopubsub:
 	gcc -D_GNU_SOURCE -lrt $(MAIN)pubsub.c $(MAIN)mom/nanomsg.c $(MAIN)mod/util.c -o bin/nanopubsub -lnanomsg -std=c99
+
+runnano-spike: all
+	bin/nanopubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 & server=$!
+#	bin/nanosub tcp://localhost:6001 A & sub1=$!
+#	bin/nanosub tcp://localhost:6001 A & sub2=$!
+#	bin/nanosub tcp://localhost:6001 A & sub3=$!
+	bin/nanosub tcp://localhost:6001 A & sub4=$!
+	bin/nanopub 1000000 tcp://*:5001 A 100 & pub1=$!
+#	bin/nanopub 1000000 tcp://*:5002 B 100 & pub2=$!
+#	bin/nanopub 1000000 tcp://*:5003 C 100 & pub3=$!
+#	bin/nanopub 100000 tcp://*:5004 D 100 & pub4=$!
 
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/test.o
