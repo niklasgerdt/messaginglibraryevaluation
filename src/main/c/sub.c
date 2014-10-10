@@ -14,7 +14,6 @@ int main(int argc, char *argv[]) {
 	chn = argv[2][0];
 	char eventFile[21] = "logs/EVENTSTORE-SUB-";
 	strcat(eventFile, channel);
-	printf("Running with params: %s, %s, %d\n", address, channel);
 
 	initTerminator();
 	initEventStore(eventFile);

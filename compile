@@ -1,3 +1,0 @@
-gcc pubsub.c -o bin/pubsub -lzmq
-#gcc pub.c times.c ../modules/terminator.c -o bin/pub -lzmq
-gcc sub.c ../modules/terminator.c -o bin/sub -lzmq

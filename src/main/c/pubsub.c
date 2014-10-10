@@ -26,7 +26,6 @@ int main(int argc, char *argv[]) {
 		med();
 	}
 
-	printf("destroying connections");
 	destroyPub();
 	destroySub();
 	return 0;

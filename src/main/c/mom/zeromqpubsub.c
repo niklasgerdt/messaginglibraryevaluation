@@ -9,36 +9,37 @@
 static void *context;
 static void *publisher;
 static void *subscriber;
-static char *channel;
+static char channel[10];
 
 void initPub(const char *addr, const char *_channel) {
-	printf("Setting up ZeroMQ pub-sub-system\n");
 	strcpy(channel, _channel);
+	printf("Binding pub %s:%s\n", addr, channel);
 	context = zmq_ctx_new();
 	publisher = zmq_socket(context, ZMQ_PUB);
 	assert(zmq_bind(publisher, addr) == 0);
-	printf("Pub bind to %s\n", addr);
+	printf("Pub bind to %s:%s\n", addr, channel);
 }
 
 void destroyPub() {
 	zmq_close(publisher);
 	zmq_ctx_destroy(context);
-	printf("ZeroMQ down\n");
+	printf("pub down\n");
 }
 
-void initSub(const char *addr, const char *channel) {
-	printf("Setting up ZeroMQ pubsub-system\n");
+void initSub(const char *addr, const char *_channel) {
+	strcpy(channel, _channel);
+	printf("Connection sub %s:%s\n", addr, channel);
 	context = zmq_ctx_new();
 	subscriber = zmq_socket(context, ZMQ_SUB);
 	assert(zmq_connect(subscriber, addr) == 0);
 	assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, channel, strlen(channel)) == 0);
 //	assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0) == 0);
-	printf("Sub connected to %s\n", addr);
+	printf("Sub connected to %s:%s\n", addr, channel);
 }
 
 void addSub(const char *addr) {
 	assert(zmq_connect(subscriber, addr) == 0);
-	printf("Sub connected to %s\n", addr);
+	printf("Sub connected to %s:%s\n", addr, channel);
 }
 
 void destroySub() {
@@ -46,7 +47,7 @@ void destroySub() {
 	if (context != NULL) {
 		zmq_ctx_destroy(context);
 	}
-	printf("ZeroMQ down\n");
+	printf("Sub down\n");
 }
 
 static void addChannel() {

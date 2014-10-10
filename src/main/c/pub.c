@@ -16,8 +16,6 @@ int main(int argc, char *argv[]) {
 	initEventStore(eventFile);
 	initPub(address, channel);
 	initTerminator();
-	printf("Running with params: \npause %d, \naddress %s, \nchannel %s, \nmsglen %d\n", pauseNanos, address, channel,
-			eventMessageLength);
 
 	size_t size = sizeof(struct event) + eventMessageLength * sizeof(char);
 	char *eData = malloc(eventMessageLength * sizeof(char));
