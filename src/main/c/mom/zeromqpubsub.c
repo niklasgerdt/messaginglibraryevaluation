@@ -32,12 +32,16 @@ void initSub(const char *addr, const char *_channel) {
 	context = zmq_ctx_new();
 	subscriber = zmq_socket(context, ZMQ_SUB);
 	assert(zmq_connect(subscriber, addr) == 0);
-	if (channel[0] == 'N') {
-		printf("no subscription (%s)", channel);
-		assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0) == 0);
-	} else {
-		printf("subscribed to channel %s", channel);
-		assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, channel, strlen(channel)) == 0);
+	for (int i = 0; i < strlen(channel); i++) {
+		if (channel[i] == 'N') {
+			printf("no subscription (%s)\n", channel);
+			assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0) == 0);
+			break;
+		} else {
+			printf("subscribed to channel %c\n", channel[i]);
+			char c[1]= {channel[i]};
+			assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, c, 1) == 0);
+		}
 	}
 	printf("Sub connected to %s:%s\n", addr, channel);
 }

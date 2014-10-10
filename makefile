@@ -36,14 +36,14 @@ runzmq-N2: all
 
 runzmq-spike: all
 	bin/zmqpubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 &
-	bin/zmqsub tcp://localhost:6001 N1 &
-	bin/zmqsub tcp://localhost:6001 N2 &
-	bin/zmqsub tcp://localhost:6001 N3 &
-	bin/zmqsub tcp://localhost:6001 N4 &
-	bin/zmqpub 10000 tcp://*:5001 A 100 &
-	bin/zmqpub 10000 tcp://*:5002 B 100 &
-	bin/zmqpub 10000 tcp://*:5003 C 100 &
-	bin/zmqpub 10000 tcp://*:5004 D 100 &
+#	bin/zmqsub tcp://localhost:6001 A &
+#	bin/zmqsub tcp://localhost:6001 A &
+#	bin/zmqsub tcp://localhost:6001 A &
+	bin/zmqsub tcp://localhost:6001 BC &
+	bin/zmqpub 1000000 tcp://*:5001 A 100 &
+	bin/zmqpub 1000000 tcp://*:5002 B 100 &
+	bin/zmqpub 1000000 tcp://*:5003 C 100 &
+#	bin/zmqpub 100000 tcp://*:5004 D 100 &
 	
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/test.o

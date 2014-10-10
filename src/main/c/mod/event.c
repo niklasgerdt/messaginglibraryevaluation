@@ -7,7 +7,7 @@
 #include "util.h"
 
 #define MILLION 1000000
-#define EVENTSTORESIZE MILLION/100
+#define EVENTSTORESIZE 10 * MILLION
 
 static int eventCount = 0;
 static struct eventHeader *events;
