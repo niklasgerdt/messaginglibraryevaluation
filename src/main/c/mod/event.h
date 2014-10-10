@@ -24,4 +24,8 @@ void storeEvent(struct event e);
 
 void finalizeEventStore();
 
+void printEvent(struct event e);
+
+void printEventHeader(struct eventHeader e);
+
 #endif /* EVENT_H_ */

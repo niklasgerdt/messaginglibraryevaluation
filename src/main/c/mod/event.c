@@ -22,6 +22,15 @@ void initEventStore(const char *fileName) {
 	events = malloc(EVENTSTORESIZE * sizeof(struct eventHeader));
 }
 
+void printEvent(struct event e) {
+	printEventHeader(e.header);
+}
+
+void printEventHeader(struct eventHeader e) {
+	printf("%c;%c;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", e.source, e.destination, e.id, e.created.tv_sec, e.created.tv_nsec,
+			e.published.tv_sec, e.published.tv_nsec, e.routed.tv_sec, e.routed.tv_nsec);
+}
+
 static void write() {
 	struct timespec ts = currentTime();
 	printf("Stroring event to file %d: %lld.%09ld\n", f->_fileno, ts.tv_sec, ts.tv_nsec);
