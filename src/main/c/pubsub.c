@@ -5,9 +5,6 @@
 #include "mod/event.h"
 #include "pubsub.h"
 
-static char *channel = "\0";
-static int stockEventLen = 100;
-
 int main(int argc, char *argv[]) {
 	char *pubAddr = argv[1];
 	char *subAddr[4];
@@ -15,6 +12,7 @@ int main(int argc, char *argv[]) {
 		subAddr[i - 1] = argv[i + 1];
 	}
 
+	char *channel = "";
 	initPub(pubAddr, channel);
 	initSub(subAddr[0], channel);
 	int i = 1;
@@ -24,10 +22,8 @@ int main(int argc, char *argv[]) {
 	}
 	initTerminator();
 
-	size_t size = sizeof(struct event) + stockEventLen * sizeof(char);
-
 	while (killSignal == 0) {
-		med(size);
+		med();
 	}
 
 	printf("destroying connections");

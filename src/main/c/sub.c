@@ -12,20 +12,16 @@ int main(int argc, char *argv[]) {
 	char *address = argv[1];
 	char *channel = argv[2];
 	chn = argv[2][0];
-	int msgLen = atoi(argv[3]);
 	char eventFile[21] = "logs/EVENTSTORE-SUB-";
 	strcat(eventFile, channel);
-	printf("Running with params: %s, %s, %d\n", address, channel, msgLen);
+	printf("Running with params: %s, %s, %d\n", address, channel);
 
 	initTerminator();
 	initEventStore(eventFile);
 	initSub(address, channel);
 
-	size_t size = sizeof(struct event) + msgLen * sizeof(char);
-	struct event *e;
-
 	while (killSignal == 0) {
-		struct event e = sub(size);
+		struct event e = sub();
 		e.header.destination = chn;
 		e.header.routed = currentTime();
 		storeEvent(e);

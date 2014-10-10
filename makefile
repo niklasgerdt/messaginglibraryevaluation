@@ -26,18 +26,17 @@ runzmq-N1-C1-P1000000: all
 #	bin/zmqpub 10000000 tcp://168.1.1.1:5002 B 100 &
 #	bin/zmqpub 10000000 tcp://168.1.1.1:5003 C 100 &
 #	bin/zmqpub 10000000 tcp://168.1.1.1:5004 D 100 &
-#	bin/zmqsub tcp://168.1.1.2:6001 A 100 &
-#	bin/zmqsub tcp://168.1.1.2:6001 B 100 &
-#	bin/zmqsub tcp://168.1.1.2:6001 C 100 &
-	bin/zmqsub tcp://168.1.1.2:6001 D 100 &
-        
+#	bin/zmqsub tcp://168.1.1.2:6001 A &
+#	bin/zmqsub tcp://168.1.1.2:6001 B &
+#	bin/zmqsub tcp://168.1.1.2:6001 C &
+	bin/zmqsub tcp://168.1.1.2:6001 D &
 
 runzmq-N2: all
 	bin/zmqpubsub tcp://168.1.1.2:6001 tcp://168.1.1.1:5001 tcp://168.1.1.1:5002 tcp://168.1.1.1:5003 tcp://168.1.1.1:5004 &
 
 runzmq-spike: all
 	bin/zmqpubsub tcp://*:6001 tcp://localhost:5001 &
-	bin/zmqsub tcp://localhost:6001 T 100 &
+	bin/zmqsub tcp://localhost:6001 T &
 	bin/zmqpub 10 tcp://*:5001 T 100 &
 
 tests:

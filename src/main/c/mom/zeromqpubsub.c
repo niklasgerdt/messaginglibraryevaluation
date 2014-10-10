@@ -9,12 +9,11 @@
 static void *context;
 static void *publisher;
 static void *subscriber;
-static char pubchannel;
-//static char *subchannel;
+static char *channel;
 
-void initPub(const char *addr, const char *channel) {
+void initPub(const char *addr, const char *_channel) {
 	printf("Setting up ZeroMQ pub-sub-system\n");
-	pubchannel = channel[0];
+	strcpy(channel, _channel);
 	context = zmq_ctx_new();
 	publisher = zmq_socket(context, ZMQ_PUB);
 	assert(zmq_bind(publisher, addr) == 0);
@@ -32,8 +31,8 @@ void initSub(const char *addr, const char *channel) {
 	context = zmq_ctx_new();
 	subscriber = zmq_socket(context, ZMQ_SUB);
 	assert(zmq_connect(subscriber, addr) == 0);
-//	assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, channel, sizeof(channel)) == 0);
-	assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0) == 0);
+	assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, channel, strlen(channel)) == 0);
+//	assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0) == 0);
 	printf("Sub connected to %s\n", addr);
 }
 
@@ -50,7 +49,18 @@ void destroySub() {
 	printf("ZeroMQ down\n");
 }
 
+static void addChannel() {
+	zmq_msg_t msg;
+	assert(zmq_msg_init_size(&msg, strlen(channel)) == 0);
+	memcpy(zmq_msg_data(&msg), channel, strlen(channel));
+	assert(zmq_msg_send(&msg, publisher, ZMQ_SNDMORE) == strlen(channel));
+	zmq_msg_close(&msg);
+}
+
 void pub(struct event e, size_t size) {
+	if (strlen(channel) > 0) {
+		addChannel();
+	}
 	zmq_msg_t msg;
 	char msgStr[size];
 	assert(zmq_msg_init_size(&msg, size) == 0);
@@ -61,12 +71,12 @@ void pub(struct event e, size_t size) {
 	zmq_msg_close(&msg);
 }
 
-struct event sub(size_t size) {
+struct event sub() {
 	zmq_msg_t msg;
 	assert(zmq_msg_init(&msg) == 0);
 	assert(zmq_msg_recv(&msg, subscriber, 0) >= 0);
-	char msgStr[size];
-	memcpy(msgStr, zmq_msg_data(&msg), size);
+	char msgStr[zmq_msg_size(&msg)];
+	memcpy(msgStr, zmq_msg_data(&msg), zmq_msg_size(&msg));
 	char src;
 	long id;
 	long int cSec;
@@ -79,7 +89,7 @@ struct event sub(size_t size) {
 	return e;
 }
 
-void med(size_t size) {
+void med() {
 	zmq_msg_t msg_in;
 	assert(zmq_msg_init(&msg_in) == 0);
 	assert(zmq_msg_recv(&msg_in, subscriber, 0) >= 0);
