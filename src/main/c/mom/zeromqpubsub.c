@@ -32,15 +32,13 @@ void initSub(const char *addr, const char *_channel) {
 	context = zmq_ctx_new();
 	subscriber = zmq_socket(context, ZMQ_SUB);
 	assert(zmq_connect(subscriber, addr) == 0);
-	printf("%c:%c\n", channel[0], channel[1]);
-	assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0) == 0);
-//	if (channel[0] == 'N') {
-//		printf("no subscription (%s)", channel);
-//		assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0) == 0);
-//	} else {
-//		printf("subscribed to channel %s", channel);
-//		assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, channel, strlen(channel)) == 0);
-//	}
+	if (channel[0] == 'N') {
+		printf("no subscription (%s)", channel);
+		assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, "", 0) == 0);
+	} else {
+		printf("subscribed to channel %s", channel);
+		assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, channel, strlen(channel)) == 0);
+	}
 	printf("Sub connected to %s:%s\n", addr, channel);
 }
 
@@ -67,7 +65,7 @@ void pub(struct event e, size_t size) {
 	sprintf(msgStr, "%c;%ld;%lld.%09ld;%d;%s", e.header.source, e.header.id, e.header.created.tv_sec, e.header.created.tv_nsec,
 			e.dataLength, e.data);
 	memcpy(zmq_msg_data(&msg), msgStr, strlen(msgStr));
-	printf("PUB:%s\n", msgStr);
+//	printf("PUB:%s\n", msgStr);
 	assert(zmq_msg_send(&msgChn, publisher, ZMQ_SNDMORE) == strlen(channel));
 	assert(zmq_msg_send(&msg, publisher, 0) == size);
 }
@@ -82,7 +80,7 @@ struct event sub() {
 	if (!zmq_msg_more(&msg)) {
 		char msgStr[zmq_msg_size(&msg)];
 		memcpy(msgStr, zmq_msg_data(&msg), zmq_msg_size(&msg));
-		printf("SUB:%s\n", msgStr);
+//		printf("SUB:%s\n", msgStr);
 		char src;
 		long id;
 		long int cSec;

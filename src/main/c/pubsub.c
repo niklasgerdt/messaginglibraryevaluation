@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
 		subAddr[i - 1] = argv[i + 1];
 	}
 
-	char *channel = "";
+	char *channel = "N";
 	initPub(pubAddr, channel);
 	initSub(subAddr[0], channel);
 	int i = 1;
