@@ -13,13 +13,13 @@ clean:
 zmq: zmqpub zmqsub zmqpubsub
 
 zmqpub:
-	gcc -D_GNU_SOURCE $(MAIN)pub.c $(MAIN)mom/zeromqpubsub.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/zmqpub -lzmq -std=c99
+	gcc -D_GNU_SOURCE $(MAIN)pub.c $(MAIN)mom/zeromq.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/zmqpub -lzmq -std=c99
 
 zmqsub:
-	gcc -D_GNU_SOURCE $(MAIN)sub.c $(MAIN)mom/zeromqpubsub.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/zmqsub -lzmq -std=c99
+	gcc -D_GNU_SOURCE $(MAIN)sub.c $(MAIN)mom/zeromq.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/zmqsub -lzmq -std=c99
 
 zmqpubsub:
-	gcc -D_GNU_SOURCE $(MAIN)pubsub.c $(MAIN)mom/zeromqpubsub.c $(MAIN)mod/util.c -o bin/zmqpubsub -lzmq -std=c99
+	gcc -D_GNU_SOURCE $(MAIN)pubsub.c $(MAIN)mom/zeromq.c $(MAIN)mod/util.c -o bin/zmqpubsub -lzmq -std=c99
 	
 runzmq-N1-C1-P1000000: all
 	bin/zmqpub 100000000 tcp://168.1.1.1:5001 A 100 &
@@ -45,6 +45,17 @@ runzmq-spike: all
 	bin/zmqpub 1000000 tcp://*:5003 C 100 &
 #	bin/zmqpub 100000 tcp://*:5004 D 100 &
 	
+nano: nanopub nanosub nanopubsub
+
+nanopub:
+	gcc -D_GNU_SOURCE -lrt $(MAIN)pub.c $(MAIN)mom/nanomsg.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/nanopub -lnanomsg -std=c99
+
+nanosub:
+	gcc -D_GNU_SOURCE -lrt $(MAIN)sub.c $(MAIN)mom/nanomsg.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/nanosub -lnanomsg -std=c99
+
+nanopubsub:
+	gcc -D_GNU_SOURCE -lrt $(MAIN)pubsub.c $(MAIN)mom/nanomsg.c $(MAIN)mod/util.c -o bin/nanopubsub -lnanomsg -std=c99
+
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/test.o
 	bin/test.o
