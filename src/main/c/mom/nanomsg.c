@@ -39,7 +39,7 @@ void initSub(const char *addr, const char *_channel) {
 		} else {
 			printf("subscribed to channel %c\n", channel[i]);
 			char c[1] = { channel[i] };
-			assert(nn_setsockopt (subscriber, NN_SUB, NN_SUB_SUBSCRIBE, "", 0) >= 0);
+			assert(nn_setsockopt (subscriber, NN_SUB, NN_SUB_SUBSCRIBE, c, 1) >= 0);
 		}
 	}
 	assert(nn_connect(subscriber, addr) >= 0);
@@ -57,14 +57,12 @@ void destroySub() {
 }
 
 void pub(struct event e, size_t size) {
-	sleep(10);
+//	sleep(10);
 	char msgStr[size+1];
 	sprintf(msgStr, "%c;%ld;%lld.%09ld;%d;%s\0", e.header.source, e.header.id, e.header.created.tv_sec, e.header.created.tv_nsec,
 			e.dataLength, e.data);
 	void *msg = nn_allocmsg(strlen(msgStr), 0);
 	strncpy(msg, msgStr, strlen(msgStr));
-	printf("PUB:%s\n", msgStr);
-	printf("PUB:%s\n", msg);
 	int nbytes = nn_send(publisher, &msg, NN_MSG, 0);
 	assert(nbytes == strlen(msgStr));
 }
@@ -77,7 +75,6 @@ struct event sub() {
 		killSignal = -1;
 		return e;
 	} else {
-		printf("SUB:%s\n", buf);
 		char src;
 		long id;
 		long int cSec;
@@ -98,13 +95,11 @@ void med() {
 		killSignal = -1;
 		return;
 	} else {
-		printf("PUBSUB:%s\n", buf);
 		void *msg = nn_allocmsg(nbytes, 0);
 		strncpy(msg, buf, nbytes);
-		printf("PUBSUB:%s\n", msg);
 		int sbytes = nn_send(publisher, &msg, NN_MSG, 0);
-//		assert(nbytes == strlen(buf));
-		printf("%d-%d-%d\n", nbytes, sbytes, strlen(buf));
+		assert(nbytes == sbytes);
+//		printf("%d-%d-%d\n", nbytes, sbytes, strlen(buf));
 		nn_freemsg(buf);
 	}
 }

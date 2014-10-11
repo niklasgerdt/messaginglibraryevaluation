@@ -10,9 +10,6 @@ all: clean zmq nano
 clean:
 	$(CLEANUP)
 
-kill-run:
-	kill $server $sub1 $sub2 $sub3 $sub4 $pub1 $pub2 $pub3 $pub4
-
 zmq: zmqpub zmqsub zmqpubsub
 
 zmqpub:
@@ -26,27 +23,49 @@ zmqpubsub:
 	
 runzmq-N1-C1-P1000000: all
 	bin/zmqpub 100000000 tcp://168.1.1.1:5001 A 100 &
-#	bin/zmqpub 10000000 tcp://168.1.1.1:5002 B 100 &
-#	bin/zmqpub 10000000 tcp://168.1.1.1:5003 C 100 &
-#	bin/zmqpub 10000000 tcp://168.1.1.1:5004 D 100 &
-#	bin/zmqsub tcp://168.1.1.2:6001 A &
-#	bin/zmqsub tcp://168.1.1.2:6001 B &
-#	bin/zmqsub tcp://168.1.1.2:6001 C &
+	sleep 1
+	bin/zmqpub 10000000 tcp://168.1.1.1:5002 B 100 &
+	sleep 1
+	bin/zmqpub 10000000 tcp://168.1.1.1:5003 C 100 &
+	sleep 1
+	bin/zmqpub 10000000 tcp://168.1.1.1:5004 D 100 &
+	sleep 1
+	bin/zmqsub tcp://168.1.1.2:6001 A &
+	sleep 1
+	bin/zmqsub tcp://168.1.1.2:6001 B &
+	sleep 1
+	bin/zmqsub tcp://168.1.1.2:6001 C &
+	sleep 1
 	bin/zmqsub tcp://168.1.1.2:6001 D &
+	read sig;
+	killall zmqsub zmqpub
 
 runzmq-N2: all
 	bin/zmqpubsub tcp://168.1.1.2:6001 tcp://168.1.1.1:5001 tcp://168.1.1.1:5002 tcp://168.1.1.1:5003 tcp://168.1.1.1:5004 &
+	read sig;
+	killall zmqsub zmqpub
 
 runzmq-spike: all
 	bin/zmqpubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 &
-#	bin/zmqsub tcp://localhost:6001 A &
-#	bin/zmqsub tcp://localhost:6001 A &
-#	bin/zmqsub tcp://localhost:6001 A &
+	sleep 1
+	bin/zmqsub tcp://localhost:6001 A &
+	sleep 1
+	bin/zmqsub tcp://localhost:6001 A &
+	sleep 1
+	bin/zmqsub tcp://localhost:6001 A &
+	sleep 1
 	bin/zmqsub tcp://localhost:6001 BC &
-#	bin/zmqpub 1000000 tcp://*:5001 A 100 &
-#	bin/zmqpub 1000000 tcp://*:5002 B 100 &
+	sleep 1
+	bin/zmqpub 1000000 tcp://*:5001 A 100 &
+	sleep 1
+	bin/zmqpub 1000000 tcp://*:5002 B 100 &
+	sleep 1
 	bin/zmqpub 100000000 tcp://*:5003 C 100 &
-#	bin/zmqpub 100000 tcp://*:5004 D 100 &
+	sleep 1
+	bin/zmqpub 100000 tcp://*:5004 D 100 &
+	sleep 1
+	read sig;
+	killall zmqsub zmqpubsub zmqpub
 	
 nano: nanopub nanosub nanopubsub
 
@@ -61,14 +80,24 @@ nanopubsub:
 
 runnano-spike: all
 	bin/nanopubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 & server=$!
-#	bin/nanosub tcp://localhost:6001 A & sub1=$!
-#	bin/nanosub tcp://localhost:6001 A & sub2=$!
-#	bin/nanosub tcp://localhost:6001 A & sub3=$!
-	bin/nanosub tcp://localhost:6001 A & sub4=$!
-	bin/nanopub 1000000 tcp://*:5001 A 100 & pub1=$!
-#	bin/nanopub 1000000 tcp://*:5002 B 100 & pub2=$!
-#	bin/nanopub 1000000 tcp://*:5003 C 100 & pub3=$!
-#	bin/nanopub 100000 tcp://*:5004 D 100 & pub4=$!
+	sleep 1
+	bin/nanosub tcp://localhost:6001 C &
+	sleep 1
+	bin/nanosub tcp://localhost:6001 N &
+	sleep 1
+	bin/nanosub tcp://localhost:6001 AB &
+	sleep 1
+	bin/nanosub tcp://localhost:6001 A &
+	sleep 1
+	bin/nanopub 1000000 tcp://*:5001 A 10000 &
+	sleep 1
+	bin/nanopub 1000000 tcp://*:5002 B 10000 &
+	sleep 1
+	bin/nanopub 1000000 tcp://*:5003 C 100 &
+	sleep 1
+	bin/nanopub 100000 tcp://*:5004 D 100 &
+	read sig;
+	killall nanosub nanopubsub nanopub
 
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/test.o

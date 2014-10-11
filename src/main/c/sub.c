@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 		struct event e = sub();
 		e.header.destination = chn;
 		e.header.routed = currentTime();
-		printEvent(e);
+//		printEvent(e);
 		storeEvent(e);
 	}
 
