@@ -5,7 +5,7 @@ INC_DIRS=-Isrc -I$(UNITY_ROOT)
 SYMBOLS=-DTEST
 CLEANUP = rm -f bin/*
 
-all: clean zmq nano
+all: clean zmq nano beans
 
 clean:
 	$(CLEANUP)
@@ -79,7 +79,7 @@ nanopubsub:
 	gcc -D_GNU_SOURCE -lrt $(MAIN)pubsub.c $(MAIN)mom/nanomsg.c $(MAIN)mod/util.c -o bin/nanopubsub -lnanomsg -std=c99
 
 runnano-spike: all
-	bin/nanopubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 & server=$!
+	bin/nanopubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 &
 	sleep 1
 	bin/nanosub tcp://localhost:6001 C &
 	sleep 1
@@ -98,6 +98,35 @@ runnano-spike: all
 	bin/nanopub 100000 tcp://*:5004 D 100 &
 	read sig;
 	killall nanosub nanopubsub nanopub
+
+beans: beanspub beanssub
+
+beanspub:
+	gcc -D_GNU_SOURCE -lrt $(MAIN)pub.c $(MAIN)mom/beanstalkd.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/beanspub -lbeanstalk -std=c99
+
+beanssub:
+	gcc -D_GNU_SOURCE -lrt $(MAIN)sub.c $(MAIN)mom/beanstalkd.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/beanssub -lbeanstalk -std=c99
+
+runbeans-spike: all
+	beanstalkd -l localhost -p 5001 &
+	sleep 1
+	bin/beanssub localhost:5001 C &
+	sleep 1
+	bin/beanssub localhost:5001 N &
+	sleep 1
+	bin/beanssub localhost:5001 AB &
+	sleep 1
+	bin/beanssub localhost:5001 A &
+	sleep 1
+	bin/beanspub 1000000 localhost:5001 A 10000 &
+	sleep 1
+	bin/beanspub 1000000 localhost:5002 B 10000 &
+	sleep 1
+	bin/beanspub 1000000 localhost:5003 C 100 &
+	sleep 1
+	bin/beanspub 100000 localhost:5004 D 100 &
+	read sig;
+	killall beanssub beanspubsub beanspub
 
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/test.o

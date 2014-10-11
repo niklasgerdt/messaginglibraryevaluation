@@ -5,13 +5,13 @@
 
 void initPub(const char *address, const char *channel);
 
-void pub(struct event e, size_t size);
+void pub(struct R20_event e, size_t size);
 
 void med();
 
 void destroyPub(void);
 
-struct event sub();
+struct R20_event sub();
 
 void initSub(const char *address, const char *channel);
 

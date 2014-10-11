@@ -13,27 +13,27 @@ int main(int argc, char *argv[]) {
 	char eventFile[20] = "logs/EVENTSTORE-PUB-";
 	strcat(eventFile, channel);
 
-	initEventStore(eventFile);
+	R20_initEventStore(eventFile);
 	initPub(address, channel);
-	initTerminator();
+	R20_initTerminator();
 
-	size_t size = sizeof(struct event) + eventMessageLength * sizeof(char);
+	size_t size = sizeof(struct R20_event) + eventMessageLength * sizeof(char);
 	char *eData = malloc(eventMessageLength * sizeof(char));
 	memset(eData, 'A', eventMessageLength * sizeof(char));
 
 	long idCount = 0;
-	while (killSignal == 0) {
-		struct eventHeader eh = { .source = channel[0], .id = idCount, .created = currentTime() };
-		struct event e = { .header = eh, .dataLength = eventMessageLength, .data = eData };
+	while (R20_killSignal == 0) {
+		struct R20_eventHeader eh = { .source = channel[0], .id = idCount, .created = R20_currentTime() };
+		struct R20_event e = { .header = eh, .dataLength = eventMessageLength, .data = eData };
 //		printEvent(e);
 		pub(e, size);
-		e.header.published = currentTime();
-		storeEvent(e);
-		pause(pauseNanos);
+		e.header.published = R20_currentTime();
+		R20_storeEvent(e);
+		R20_pause(pauseNanos);
 		idCount++;
 	}
 
-	finalizeEventStore();
+	R20_finalizeEventStore();
 	destroyPub();
 	return 0;
 }

@@ -3,12 +3,12 @@
 
 #include <time.h>
 
-void pause(long pause);
+void R20_pause(long pause);
 
-struct timespec currentTime();
+struct timespec R20_currentTime();
 
-int killSignal;
+int R20_killSignal;
 
-void initTerminator(void);
+void R20_initTerminator(void);
 
 #endif /* UTIL_H_ */

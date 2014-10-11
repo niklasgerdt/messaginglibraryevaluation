@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
 		addSub(subAddr[i]);
 		i++;
 	}
-	initTerminator();
+	R20_initTerminator();
 
-	while (killSignal == 0) {
+	while (R20_killSignal == 0) {
 		med();
 	}
 

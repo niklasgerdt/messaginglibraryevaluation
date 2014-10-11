@@ -15,19 +15,19 @@ int main(int argc, char *argv[]) {
 	char eventFile[21] = "logs/EVENTSTORE-SUB-";
 	strcat(eventFile, channel);
 
-	initTerminator();
-	initEventStore(eventFile);
+	R20_initTerminator();
+	R20_initEventStore(eventFile);
 	initSub(address, channel);
 
-	while (killSignal == 0) {
-		struct event e = sub();
+	while (R20_killSignal == 0) {
+		struct R20_event e = sub();
 		e.header.destination = chn;
-		e.header.routed = currentTime();
+		e.header.routed = R20_currentTime();
 //		printEvent(e);
-		storeEvent(e);
+		R20_storeEvent(e);
 	}
 
-	finalizeEventStore();
+	R20_finalizeEventStore();
 	destroySub();
 	return 0;
 }

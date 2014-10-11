@@ -59,7 +59,7 @@ void destroySub() {
 	printf("Sub down\n");
 }
 
-void pub(struct event e, size_t size) {
+void pub(struct R20_event e, size_t size) {
 	zmq_msg_t msgChn;
 	assert(zmq_msg_init_size(&msgChn, strlen(channel)) == 0);
 	memcpy(zmq_msg_data(&msgChn), channel, strlen(channel));
@@ -74,8 +74,8 @@ void pub(struct event e, size_t size) {
 	assert(zmq_msg_send(&msg, publisher, 0) == size);
 }
 
-struct event sub() {
-	struct event e;
+struct R20_event sub() {
+	struct R20_event e;
 	zmq_msg_t msg;
 	assert(zmq_msg_init(&msg) == 0);
 	if (zmq_msg_recv(&msg, subscriber, 0) == -1) {
@@ -91,8 +91,8 @@ struct event sub() {
 		long int cNsec;
 		sscanf(msgStr, "%c;%ld;%lld.%09ld", &src, &id, &cSec, &cNsec);
 		struct timespec t = { .tv_sec = cSec, .tv_nsec = cNsec };
-		struct eventHeader eh = { .source = src, .id = id, .created = t };
-		struct event e = { e.header = eh };
+		struct R20_eventHeader eh = { .source = src, .id = id, .created = t };
+		struct R20_event e = { e.header = eh };
 		zmq_msg_close(&msg);
 		return e;
 	} else {

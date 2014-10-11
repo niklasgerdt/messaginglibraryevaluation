@@ -13,8 +13,8 @@ static int subscriber;
 static char channel[10];
 
 void initPub(const char *addr, const char *_channel) {
-	printf("Binding pub %s:%s\n", addr, channel);
 	strcpy(channel, _channel);
+	printf("Binding pub %s:%s\n", addr, channel);
 	publisher = nn_socket(AF_SP, NN_PUB);
 	assert(publisher >= 0);
 	assert(nn_bind(publisher, addr) >= 0);
@@ -56,7 +56,7 @@ void destroySub() {
 	printf("Sub down\n");
 }
 
-void pub(struct event e, size_t size) {
+void pub(struct R20_event e, size_t size) {
 //	sleep(10);
 	char msgStr[size+1];
 	sprintf(msgStr, "%c;%ld;%lld.%09ld;%d;%s\0", e.header.source, e.header.id, e.header.created.tv_sec, e.header.created.tv_nsec,
@@ -67,12 +67,12 @@ void pub(struct event e, size_t size) {
 	assert(nbytes == strlen(msgStr));
 }
 
-struct event sub() {
-	struct event e;
+struct R20_event sub() {
+	struct R20_event e;
 	void *buf = NULL;
 	int nbytes = nn_recv(subscriber, &buf, NN_MSG, 0);
 	if (nbytes < 0) {
-		killSignal = -1;
+		R20_killSignal = -1;
 		return e;
 	} else {
 		char src;
@@ -81,8 +81,8 @@ struct event sub() {
 		long int cNsec;
 		sscanf(buf, "%c;%ld;%lld.%09ld", &src, &id, &cSec, &cNsec);
 		struct timespec t = { .tv_sec = cSec, .tv_nsec = cNsec };
-		struct eventHeader eh = { .source = src, .id = id, .created = t };
-		struct event e = { e.header = eh };
+		struct R20_eventHeader eh = { .source = src, .id = id, .created = t };
+		struct R20_event e = { e.header = eh };
 		nn_freemsg(buf);
 		return e;
 	}
@@ -92,7 +92,7 @@ void med() {
 	void *buf = NULL;
 	int nbytes = nn_recv(subscriber, &buf, NN_MSG, 0);
 	if (nbytes < 0) {
-		killSignal = -1;
+		R20_killSignal = -1;
 		return;
 	} else {
 		void *msg = nn_allocmsg(nbytes, 0);
