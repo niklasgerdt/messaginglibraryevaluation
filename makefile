@@ -46,24 +46,15 @@ runzmq-N2: all
 	killall zmqsub zmqpub
 
 runzmq-spike: all
-	bin/zmqpubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 &
-	sleep 1
+#	bin/zmqpubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 &
 	bin/zmqsub tcp://localhost:6001 A &
-	sleep 1
-	bin/zmqsub tcp://localhost:6001 A &
-	sleep 1
-	bin/zmqsub tcp://localhost:6001 A &
-	sleep 1
-	bin/zmqsub tcp://localhost:6001 BC &
-	sleep 1
+	bin/zmqsub tcp://localhost:6001 B &
+	bin/zmqsub tcp://localhost:6001 N &
+	bin/zmqsub tcp://localhost:6001 AB &
 	bin/zmqpub 1000000 tcp://*:5001 A 100 &
-	sleep 1
 	bin/zmqpub 1000000 tcp://*:5002 B 100 &
-	sleep 1
-	bin/zmqpub 100000000 tcp://*:5003 C 100 &
-	sleep 1
-	bin/zmqpub 100000 tcp://*:5004 D 100 &
-	sleep 1
+	bin/zmqpub 1000000 tcp://*:5003 C 100 &
+	bin/zmqpub 1000000 tcp://*:5004 D 100 &
 	read sig;
 	killall zmqsub zmqpubsub zmqpub
 	
@@ -80,21 +71,13 @@ nanopubsub:
 
 runnano-spike: all
 	bin/nanopubsub tcp://*:6001 tcp://localhost:5001 tcp://localhost:5002 tcp://localhost:5003 tcp://localhost:5004 &
-	sleep 1
-	bin/nanosub tcp://localhost:6001 C &
-	sleep 1
-	bin/nanosub tcp://localhost:6001 N &
-	sleep 1
-	bin/nanosub tcp://localhost:6001 AB &
-	sleep 1
 	bin/nanosub tcp://localhost:6001 A &
-	sleep 1
-	bin/nanopub 1000000 tcp://*:5001 A 10000 &
-	sleep 1
-	bin/nanopub 1000000 tcp://*:5002 B 10000 &
-	sleep 1
-	bin/nanopub 1000000 tcp://*:5003 C 100 &
-	sleep 1
+	bin/nanosub tcp://localhost:6001 B &
+	bin/nanosub tcp://localhost:6001 AB &
+	bin/nanosub tcp://localhost:6001 N &
+	bin/nanopub 100000 tcp://*:5001 A 100 &
+	bin/nanopub 100000 tcp://*:5002 B 100 &
+	bin/nanopub 100000 tcp://*:5003 C 100 &
 	bin/nanopub 100000 tcp://*:5004 D 100 &
 	read sig;
 	killall nanosub nanopubsub nanopub
@@ -108,25 +91,27 @@ beanssub:
 	gcc -D_GNU_SOURCE -lrt $(MAIN)sub.c $(MAIN)mom/beanstalkd.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/beanssub -lbeanstalk -std=c99
 
 runbeans-spike: all
-	beanstalkd -l localhost -p 5001 &
+	beanstalkd -l 127.0.0.1 -p 5001 &
 	sleep 1
-	bin/beanssub localhost:5001 C &
+	bin/beanssub 127.0.0.1:5001 A &
 	sleep 1
-	bin/beanssub localhost:5001 N &
+	bin/beanssub 127.0.0.1:5001 B &
 	sleep 1
-	bin/beanssub localhost:5001 AB &
+	bin/beanssub 127.0.0.1:5001 AB &
 	sleep 1
-	bin/beanssub localhost:5001 A &
+	bin/beanssub 127.0.0.1:5001 N &
 	sleep 1
-	bin/beanspub 1000000 localhost:5001 A 10000 &
+	bin/beanspub 100000 127.0.0.1:5001 A 100 &
 	sleep 1
-	bin/beanspub 1000000 localhost:5002 B 10000 &
+	bin/beanspub 100000 127.0.0.1:5001 B 100 &
 	sleep 1
-	bin/beanspub 1000000 localhost:5003 C 100 &
+	bin/beanspub 100000 127.0.0.1:5001 C 100 &
 	sleep 1
-	bin/beanspub 100000 localhost:5004 D 100 &
+	bin/beanspub 100000 127.0.0.1:5001 N 100 &
 	read sig;
-	killall beanssub beanspubsub beanspub
+	killall beanssub beanspub
+	sleep 1
+	killall beanstalkd 
 
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/test.o

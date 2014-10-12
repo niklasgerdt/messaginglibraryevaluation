@@ -4,8 +4,8 @@
 #include <time.h>
 
 struct R20_eventHeader {
-	char source;
-	char destination;
+	char source[5];
+	char destination[5];
 	long id;
 	struct timespec created;
 	struct timespec published;

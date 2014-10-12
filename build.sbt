@@ -28,9 +28,9 @@ de.johoop.cpd4sbt.CopyPasteDetector.cpdSettings
 
 fork in run := true
 
-javaOptions in run += "-Xmx4G"
+javaOptions in run += "-Xmx6G"
 
-javaOptions in run += "-Xms1G"
+javaOptions in run += "-Xms6G"
 
 javaOptions in run += "-XX:+UseG1GC"
 
@@ -42,7 +42,7 @@ javaOptions in run += "-XX:+PrintGCApplicationConcurrentTime"
 
 javaOptions in run += "-XX:+PrintGCApplicationStoppedTime"
 
-javaOptions in run += "-Xloggc:gc_log"
+javaOptions in run += "-Xloggc:../logs/JVM"
 
-baseDirectory in run := file("../perf/")
+baseDirectory in run := file("bin/")
 

@@ -4,6 +4,7 @@
 #include <string.h>
 #include "mod/util.h"
 #include "pubsub.h"
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
 	long pauseNanos = atol(argv[1]);
@@ -23,9 +24,9 @@ int main(int argc, char *argv[]) {
 
 	long idCount = 0;
 	while (R20_killSignal == 0) {
-		struct R20_eventHeader eh = { .source = channel[0], .id = idCount, .created = R20_currentTime() };
+		struct R20_eventHeader eh = { .source = "XXXX\0", .id = idCount, .created = R20_currentTime() };
+		strncpy(eh.source, channel, strlen(channel));
 		struct R20_event e = { .header = eh, .dataLength = eventMessageLength, .data = eData };
-//		printEvent(e);
 		pub(e, size);
 		e.header.published = R20_currentTime();
 		R20_storeEvent(e);

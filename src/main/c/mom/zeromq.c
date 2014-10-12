@@ -39,7 +39,7 @@ void initSub(const char *addr, const char *_channel) {
 			break;
 		} else {
 			printf("subscribed to channel %c\n", channel[i]);
-			char c[1]= {channel[i]};
+			char c[1] = { channel[i] };
 			assert(zmq_setsockopt(subscriber, ZMQ_SUBSCRIBE, c, 1) == 0);
 		}
 	}
@@ -66,10 +66,9 @@ void pub(struct R20_event e, size_t size) {
 	zmq_msg_t msg;
 	assert(zmq_msg_init_size(&msg, size) == 0);
 	char msgStr[size];
-	sprintf(msgStr, "%c;%ld;%lld.%09ld;%d;%s", e.header.source, e.header.id, e.header.created.tv_sec, e.header.created.tv_nsec,
-			e.dataLength, e.data);
+	sprintf(msgStr, "%4s;%ld;%lld.%09ld;%d;%s", e.header.source, e.header.id, e.header.created.tv_sec,
+			e.header.created.tv_nsec, e.dataLength, e.data);
 	memcpy(zmq_msg_data(&msg), msgStr, strlen(msgStr));
-//	printf("PUB:%s\n", msgStr);
 	assert(zmq_msg_send(&msgChn, publisher, ZMQ_SNDMORE) == strlen(channel));
 	assert(zmq_msg_send(&msg, publisher, 0) == size);
 }
@@ -84,14 +83,14 @@ struct R20_event sub() {
 	if (!zmq_msg_more(&msg)) {
 		char msgStr[zmq_msg_size(&msg)];
 		memcpy(msgStr, zmq_msg_data(&msg), zmq_msg_size(&msg));
-//		printf("SUB:%s\n", msgStr);
-		char src;
+		char src[4];
 		long id;
 		long int cSec;
 		long int cNsec;
-		sscanf(msgStr, "%c;%ld;%lld.%09ld", &src, &id, &cSec, &cNsec);
+		sscanf(msgStr, "%4s;%ld;%lld.%09ld", src, &id, &cSec, &cNsec);
 		struct timespec t = { .tv_sec = cSec, .tv_nsec = cNsec };
-		struct R20_eventHeader eh = { .source = src, .id = id, .created = t };
+		struct R20_eventHeader eh = { .source = "XXXX\0", .id = id, .created = t };
+		strncpy(eh.source, src, 4);
 		struct R20_event e = { e.header = eh };
 		zmq_msg_close(&msg);
 		return e;

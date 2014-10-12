@@ -57,10 +57,9 @@ void destroySub() {
 }
 
 void pub(struct R20_event e, size_t size) {
-//	sleep(10);
 	char msgStr[size+1];
-	sprintf(msgStr, "%c;%ld;%lld.%09ld;%d;%s\0", e.header.source, e.header.id, e.header.created.tv_sec, e.header.created.tv_nsec,
-			e.dataLength, e.data);
+	sprintf(msgStr, "%4s;%ld;%lld.%09ld;%d;%s", e.header.source, e.header.id, e.header.created.tv_sec,
+			e.header.created.tv_nsec, e.dataLength, e.data);
 	void *msg = nn_allocmsg(strlen(msgStr), 0);
 	strncpy(msg, msgStr, strlen(msgStr));
 	int nbytes = nn_send(publisher, &msg, NN_MSG, 0);
@@ -75,13 +74,14 @@ struct R20_event sub() {
 		R20_killSignal = -1;
 		return e;
 	} else {
-		char src;
+		char src[4];
 		long id;
 		long int cSec;
 		long int cNsec;
-		sscanf(buf, "%c;%ld;%lld.%09ld", &src, &id, &cSec, &cNsec);
+		sscanf(buf, "%4s;%ld;%lld.%09ld", src, &id, &cSec, &cNsec);
 		struct timespec t = { .tv_sec = cSec, .tv_nsec = cNsec };
-		struct R20_eventHeader eh = { .source = src, .id = id, .created = t };
+		struct R20_eventHeader eh = { .source = "XXXX\0", .id = id, .created = t };
+		strncpy(eh.source, src, 4);
 		struct R20_event e = { e.header = eh };
 		nn_freemsg(buf);
 		return e;
