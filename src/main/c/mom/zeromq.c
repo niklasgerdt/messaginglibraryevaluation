@@ -13,7 +13,6 @@ static char channel[10];
 
 void initPub(const char *addr, const char *_channel) {
 	strcpy(channel, _channel);
-	printf("Binding pub %s:%s\n", addr, channel);
 	context = zmq_ctx_new();
 	publisher = zmq_socket(context, ZMQ_PUB);
 	assert(zmq_bind(publisher, addr) == 0);

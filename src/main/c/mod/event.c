@@ -32,14 +32,12 @@ void R20_printEventHeader(struct R20_eventHeader e) {
 }
 
 static void write() {
-	struct timespec ts = R20_currentTime();
-	printf("Stroring event to file %d: %lld.%09ld\n", f->_fileno, ts.tv_sec, ts.tv_nsec);
 	for (int i = 0; i < eventCount; i++) {
 		fprintf(f, "%s;%s;%d;%lld.%09ld;%lld.%09ld;%lld.%09ld\n", events[i].source, events[i].destination, events[i].id,
 				events[i].created.tv_sec, events[i].created.tv_nsec, events[i].published.tv_sec, events[i].published.tv_nsec,
 				events[i].routed.tv_sec, events[i].routed.tv_nsec);
 	}
-	ts = R20_currentTime();
+	struct timespec ts = R20_currentTime();
 	printf("Events stored to file %d: %lld.%09ld\n", f->_fileno, ts.tv_sec, ts.tv_nsec);
 	eventCount = 0;
 	free(events);
