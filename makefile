@@ -5,7 +5,7 @@ INC_DIRS=-Isrc -I$(UNITY_ROOT)
 SYMBOLS=-DTEST
 CLEANUP = rm -f bin/* logs/*
 
-all: clean zmq nano beans
+all: clean zmq nano dummy
 
 clean:
 	$(CLEANUP)
@@ -31,6 +31,9 @@ nanosub:
 
 nanopubsub:
 	gcc -D_GNU_SOURCE -lrt $(MAIN)pubsub.c $(MAIN)mom/nanomsg.c $(MAIN)mod/util.c -o bin/nanopubsub -lnanomsg -std=c99
+
+dummy:
+	gcc -D_GNU_SOURCE -lrt $(MAIN)pub.c $(MAIN)mom/dummy.c $(MAIN)mod/event.c $(MAIN)mod/util.c -o bin/dummypub -lnanomsg -std=c99
 
 tests:
 	gcc $(TEST)sizeofspike.c -o bin/test.o
