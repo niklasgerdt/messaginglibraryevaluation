@@ -5,28 +5,26 @@ import grizzled.slf4j.Logging
 import scala.io.Source
 
 object AnalyzeRoutingSpeed extends App with Logging {
-  val drop = 1000000
-  val take = 1000000
-  val filename = "/media/devel/repos/MOM4HFT/src/main/resources/EVENTSTORE-PUB-A"
-  //  val filename = args(0)
-  val file = new File(filename)
+  val srcFilename = "/media/devel/repos/MOM4HFT/src/main/resources/EVENTSTORE-PUB-A"
+  val dstFilename = "/media/devel/repos/MOM4HFT/src/main/resources/EVENTSTORE-PUB-A"
+  //  val srcFilename = args(0)
+  //  val dstFilename = args(1)
+  val srcfile = new File(srcFilename)
+  val dstfile = new File(srcFilename)
 
-  assert(file.exists())
-  info("Analyzing simulator speed. Using file : " + file.getAbsolutePath)
+  assert(srcfile.exists())
+  assert(dstfile.exists())
+  info("Analyzing simulator speed. Using files : " + srcfile.getAbsolutePath + " and " + dstfile.getAbsolutePath)
 
-  val sample = Source.fromFile(file).
-    getLines().
-    drop(drop).
-    take(take).
-    map(Util.mapToRouteInfo(_)).
-    toList
+  val srcsample = Util.mapFileToRouteInfoList(srcfile)
+  val dstsample = Util.mapFileToRouteInfoList(dstfile)
 
   val none: Option[RouteInfo] = None
-  val agg = sample.foldLeft((none, 0L, 0L))(avef(_, _))
+  val agg = srcsample.foldLeft((none, 0L, 0L))(avef(_, _))
   val ave = agg._2 / (agg._3 - 1)
-  val max = sample.foldLeft((none, 0L))(maxf(_, _))._2
-  val min = sample.foldLeft((none, Const.maxNanos))(minf(_, _))._2
-  val aggStd = sample.foldLeft((none, 0L, ave))(stdf(_, _))
+  val max = srcsample.foldLeft((none, 0L))(maxf(_, _))._2
+  val min = srcsample.foldLeft((none, Const.maxNanos))(minf(_, _))._2
+  val aggStd = srcsample.foldLeft((none, 0L, ave))(stdf(_, _))
   val std = Math.sqrt(aggStd._2) / (agg._3 - 1)
 
   info("Simulator average delay is: " + ave)
@@ -84,21 +82,13 @@ object AnalyzeRoutingSpeed extends App with Logging {
 }
 
 object AnalyzeSimulatorSpeed extends App with Logging {
-  val drop = 1000000
-  val take = 1000000
   val filename = "/media/devel/repos/MOM4HFT/src/main/resources/EVENTSTORE-PUB-A"
   //  val filename = args(0)
   val file = new File(filename)
-
   assert(file.exists())
   info("Analyzing simulator speed. Using file : " + file.getAbsolutePath)
 
-  val sample = Source.fromFile(file).
-    getLines().
-    drop(drop).
-    take(take).
-    map(Util.mapToRouteInfo(_)).
-    toList
+  val sample = Util.mapFileToRouteInfoList(file)
 
   val none: Option[RouteInfo] = None
   val agg = sample.foldLeft((none, 0L, 0L))(avef(_, _))
@@ -203,8 +193,18 @@ object Util {
     val n = nano.get.toLong
     Stamp(s, n)
   }
+
+  def mapFileToRouteInfoList(file: File) =
+    Source.fromFile(file).
+      getLines().
+      drop(Const.drop).
+      take(Const.take).
+      map(Util.mapToRouteInfo(_)).
+      toList
 }
 
 object Const {
   val maxNanos = 999999999L
+  val drop = 1000000
+  val take = 1000000
 }
