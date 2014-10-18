@@ -18,8 +18,6 @@ libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.1.2
 
 libraryDependencies += "org.zeromq" % "jeromq" % "0.3.4" 
 
-libraryDependencies += "org.apache.spark" % "spark-core_2.10" % "1.1.0" 
-
 instrumentSettings
 
 org.scalastyle.sbt.ScalastylePlugin.Settings

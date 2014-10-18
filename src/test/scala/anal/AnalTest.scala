@@ -19,7 +19,7 @@ class StampTest extends BaseTest {
 
   "apply" should "drop invalid chars" in {
     intercept[AssertionError] {
-      Util.mapToStamp("1aa.2aa")
+      Util.mapToStamp("aa.aa")
     }
   }
 
