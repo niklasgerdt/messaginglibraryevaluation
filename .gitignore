@@ -37,3 +37,4 @@ build/
 EVENTSTORE*
 *.o
 logs/
+*.tar
