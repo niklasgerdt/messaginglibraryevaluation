@@ -23,3 +23,9 @@
 + standard deviation (ns) 577
 + max pause (ns)          23658
 + min pause (ns)          84
+
+##### configured pause (ns)   0
++ average pause (ns)      100
++ standard deviation (ns) 577
++ max pause (ns)          25727
++ min pause (ns)          84
