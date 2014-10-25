@@ -2,13 +2,13 @@
 
 ##### configured pause (ns)   10000
 + average pause (ns)      11370
-+ standard deviation (ns) 130
++ standard deviation (ns) 420
 + max pause (ns)          307154
 + min pause (ns)          10267
 
 ##### configured pause (ns)   5000
 + average pause (ns)      5740
-+ standard deviation (ns) 140
++ standard deviation (ns) 310
 + max pause (ns)          35729
 + min pause (ns)          5242
 
