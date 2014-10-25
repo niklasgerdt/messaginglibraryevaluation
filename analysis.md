@@ -29,3 +29,14 @@
 + standard deviation (ns) 577
 + max pause (ns)          25727
 + min pause (ns)          84
+
+## ZEROMQ
++ pause (ns)            11370
++ rxpck/s               26.72
++ txpck/s               26.72
++ rxkB/s                2.03
++ txkB/s                1.67
++ cpu usr %             0.04
++ cpu sys %             0.26
++ memused %             7.84
++ 
