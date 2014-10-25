@@ -6,11 +6,29 @@
 + max pause (ns)          307154
 + min pause (ns)          10267
 
+##### configured pause (ns)   5000
++ average pause (ns)      5739
++ standard deviation (ns) 577
++ max pause (ns)          35729
++ min pause (ns)          5242
+
+##### configured pause (ns)   2500
++ average pause (ns)      2933
++ standard deviation (ns) 577
++ max pause (ns)          83752
++ min pause (ns)          2599
+
 ##### configured pause (ns)   1000
 + average pause (ns)      1230
 + standard deviation (ns) 577
 + max pause (ns)          10215
 + min pause (ns)          1100
+
+##### configured pause (ns)   500
++ average pause (ns)      672
++ standard deviation (ns) 577
++ max pause (ns)          12342
++ min pause (ns)          599
 
 ##### configured pause (ns)   100
 + average pause (ns)      183
