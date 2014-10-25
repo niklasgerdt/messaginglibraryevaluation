@@ -61,7 +61,7 @@ object AnalyzeSimulatorSpeed extends App with StatFunctions with Logging {
   val max = sample.foldLeft((none, 0L))(maxf(_, _))._2
   val min = sample.foldLeft((none, Const.maxNanos))(minf(_, _))._2
   val aggStd = sample.foldLeft((none, 0L, ave))(stdf(_, _))
-  val std = Math.sqrt(aggStd._2) / (agg._3 - 1)
+  val std = Math.sqrt(aggStd._2 / (agg._3 - 1))
 
   info("Simulator average delay is: " + ave)
   info("Simulator maximum delay is: " + max)
@@ -169,6 +169,7 @@ trait StatFunctions {
       val elapsed = cur.prepub - prev.postpub
       val s = elapsed.nano - a._3
       val ss = s * s
+      assert (a._2 + ss > a._2)
       (Some(cur), a._2 + ss, a._3)
     }
   }
