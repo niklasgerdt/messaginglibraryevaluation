@@ -4,12 +4,15 @@ OUTDIR=bin/build/
 UNITY_ROOT=$(TEST)/unity/src
 INC_DIRS=-Isrc -I$(UNITY_ROOT)
 SYMBOLS=-DTEST
-CLEANUP = rm -f bin/build/*
+CLEANUP = rm -rf bin/build
 
-all: clean zmq nano dummy
+all: clean setup zmq nano dummy
 
 clean:
 	$(CLEANUP)
+
+setup:
+	mkdir $(OUTDIR)
 
 zmq: zmqpub zmqsub zmqpubsub
 

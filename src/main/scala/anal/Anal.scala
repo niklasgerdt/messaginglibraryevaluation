@@ -82,8 +82,8 @@ object AnalyzeRoutingSpeed extends App with Logging {
 }
 
 object AnalyzeSimulatorSpeed extends App with Logging {
-  val filename = "/media/devel/repos/MOM4HFT/src/main/resources/EVENTSTORE-PUB-A"
-  //  val filename = args(0)
+  val filepath = "/media/devel/repos/MOM4HFT/logs/"
+  val filename = filepath + args(0)
   val file = new File(filename)
   assert(file.exists())
   info("Analyzing simulator speed. Using file : " + file.getAbsolutePath)
