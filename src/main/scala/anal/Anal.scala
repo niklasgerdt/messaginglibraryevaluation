@@ -169,7 +169,7 @@ trait StatFunctions {
       val elapsed = cur.prepub - prev.postpub
       val s = elapsed.nano - a._3
       val ss = s * s
-      if (a._2 + ss > a._2) {
+      if (a._2 + ss < a._2) {
         println("overflow " + a._2 + " : " + ss)
       }
       (Some(cur), a._2 + ss, a._3)
