@@ -9,3 +9,7 @@ $DIR/zmqsub tcp://168.1.1.2:6001 N1 &
 $DIR/zmqsub tcp://168.1.1.2:6001 N2 &
 $DIR/zmqsub tcp://168.1.1.2:6001 N3 &
 $DIR/zmqsub tcp://168.1.1.2:6001 N4 &
+
+read sig;
+killall zmqsub zmqpub
+
