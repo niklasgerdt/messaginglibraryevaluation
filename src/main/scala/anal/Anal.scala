@@ -22,7 +22,7 @@ object AnalyzeRoutingSpeed extends App with StatFunctions with Logging {
   val max = dstsample.foldLeft(0L)(maxRoutingf(_, _))
   val min = dstsample.foldLeft(Const.maxNanos)(minRoutingf(_, _))
   val aggStd = dstsample.foldLeft((0L, ave))(stdRoutingf(_, _))
-  val std = Math.sqrt(aggStd._2) / (agg._2 - 1)
+  val std = Math.sqrt(aggStd._2 / (agg._2 - 1))
 
   info("Average routing delay is: " + ave)
   info("Routing maximum delay is: " + max)
@@ -169,9 +169,7 @@ trait StatFunctions {
       val elapsed = cur.prepub - prev.postpub
       val s = elapsed.nano - a._3
       val ss = s * s
-      if (a._2 + ss < a._2) {
-        println("overflow " + a._2 + " : " + ss)
-      }
+      assert(a._2 + ss > a._2)
       (Some(cur), a._2 + ss, a._3)
     }
   }
@@ -201,6 +199,7 @@ trait StatFunctions {
     val elapsed = cur.routed - cur.prepub
     val s = elapsed.nano - a._2
     val ss = s * s
+    assert(ss + a._1 > a._1)
     (a._1 + ss, a._2)
   }
 }
