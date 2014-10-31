@@ -1,11 +1,1 @@
-HFT Event Routing
-=================
-Evaluation of messaging solutions for high-frequency trading (HFT) event routing.
-
-Systems under evaluation
-------------------------
-* ZeroMQ
-* JeroMQ
-* Nanomsg
-* Apache Kafka
-* Kestrel
+Evaluation of messaging library performance using publish-subscribe-model. Systems under evaluation are ZeroMQ, JeroMQ, Nanomsg and Netty.
