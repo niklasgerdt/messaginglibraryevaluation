@@ -1,9 +1,9 @@
 package eu.route20.hft.pub
 
-import eu.route20.hft.common.Notification
 import eu.route20.hft.test.BaseTest
 import grizzled.slf4j.Logging
 import org.scalatest._
+import pubsub.Notification
 
 class DummyPubTest extends BaseTest {
 

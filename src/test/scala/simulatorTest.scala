@@ -1,10 +1,9 @@
 package eu.route20.hft.simulator
 
 import eu.route20.hft.test.BaseTest
-import eu.route20.hft.common.Notification
-import eu.route20.hft.pub.Pub
 import org.scalatest._
 import eu.route20.hft.simulator._
+import pubsub.{Pub, Notification}
 
 class SimulatorTest extends BaseTest {
   def mock = new Mock
