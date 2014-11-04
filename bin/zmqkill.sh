@@ -1,1 +1,0 @@
-killall zmqsub zmqpubsub zmqpub
