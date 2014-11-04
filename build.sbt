@@ -16,7 +16,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.1" % "test"
 
 libraryDependencies += "org.scalamock" %% "scalamock-scalatest-support" % "3.1.2" % "test" 
 
-libraryDependencies += "org.zeromq" % "pubsub/jeromq" % "0.3.4"
+libraryDependencies += "org.zeromq" % "jeromq" % "0.3.4"
 
 instrumentSettings
 

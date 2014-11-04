@@ -1,6 +1,5 @@
 package pubsub
 
-import LocalPubSub
 import grizzled.slf4j.Logging
 import org.zeromq.ZMQ
 

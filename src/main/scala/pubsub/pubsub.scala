@@ -2,8 +2,6 @@ package pubsub
 
 import grizzled.slf4j.Logging
 import org.zeromq.ZMQ
-import pubsub.LocalSub
-
 import scala.annotation.tailrec
 
 object JeroMQ extends App with Logging {
